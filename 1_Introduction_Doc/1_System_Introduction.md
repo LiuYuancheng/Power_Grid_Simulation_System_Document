@@ -1,14 +1,14 @@
 # Power_Grid_Simulation_System [System Introduction]
 
-This document will introduce the overview of the power grid system, system structure and the detail information of the three main subsystems : `2D Power Grid Physical-world Simulation`, `Power System Controller Simulation (MU, PLC & RTU)` and 
+This document will introduce the overview of the power grid system, system structure and the detail information of the three main subsystems : `2D Power Grid Physical-world Simulation`, `Power System Controller Simulation (MU, PLC & RTU)` and `Power Grid Supervisory Human Machine Interface (HMI)`. 
 
 ![](../img/logo_small.png)
 
 ```python
 # Author:      Yuancheng Liu
-# Created:     2025/02/14
+# Created:     2025/02/10
 # Version:     v_0.2.0
-# DocNum:      Wiki_1_0
+# DocNum:      Wiki_1_1
 ```
 
 **Table of Contents**
