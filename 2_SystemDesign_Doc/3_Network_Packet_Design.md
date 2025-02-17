@@ -13,7 +13,12 @@ This document will introduce the OT network protocol communication packets struc
 
 **Table of Contents**
 
+[TOC]
 
+- [Power_Grid_Simulation_System [ Network Packet Design ]](#power-grid-simulation-system---network-packet-design--)
+    + [Power Grid Control PLC to HMI [Register Data]](#power-grid-control-plc-to-hmi--register-data-)
+    + [Power Grid Control PLC to HMI [Coil Data]](#power-grid-control-plc-to-hmi--coil-data-)
+    + [Power Grid Monitor RTU to HMI [Metering Unit Data]](#power-grid-monitor-rtu-to-hmi--metering-unit-data-)
 
 ------
 

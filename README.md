@@ -83,9 +83,28 @@ The platform consists of three primary components, each targeting a different le
 
 ### Project Document List
 
+This section will list the document files in each Wiki folder
 
+#### [1] Introduction Documents
 
+- The introduction document of the project, papers and the presentation slides. 
+- Folder : **1_Introduction_Doc**
 
+| File Name                     | Wiki Index | Version | Description                                     | Doc Link                                               |
+| ----------------------------- | ---------- | ------- | ----------------------------------------------- | ------------------------------------------------------ |
+| `1_System_Introduction.md`    | Wiki_1_1   | v_0.2.0 | The project introduction and overview document. | [Link](1_Introduction_Doc/1_System_Introduction.md)    |
+| `2_Product_Introduction.pptx` | Wiki_1_2   | v_0.1.5 | Product Introduction slides.                    | [Link](1_Introduction_Doc/2_Product_Introduction.pptx) |
+
+#### [2] Software Design Documents
+
+- The document of the main system, subsystem, network structure and program. 
+- Folder : **2_SystemDesign_Doc**
+
+| File Name                          | Wiki Index | Version | Description                                                  | Doc Link                                                    |
+| ---------------------------------- | ---------- | ------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| `1_System_Design.md`               | Wiki_2_1   | v_0.2.0 | The main system design introduction.                         | [Link](2_SystemDesign_Doc/1_System_Design.md)               |
+| `2_PLC_Breakers_Control_Design.md` | Wiki_2_2   | v_0.2.0 | The program PLC simulator breakers control flow design introduction. | [Link](2_SystemDesign_Doc/2_PLC_Breakers_Control_Design.md) |
+| `3_Network_Packet_Design.md`       | Wiki_2_3   | v_0.2.0 | OT network communication design document.                    | [Link](2_SystemDesign_Doc/3_Network_Packet_Design.md)       |
 
 
 

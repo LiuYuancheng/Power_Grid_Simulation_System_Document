@@ -15,6 +15,14 @@ This document provides a detailed explanation of how the PLC control flow for ci
 
 [TOC]
 
+- [Power_Grid_Simulation_System [ PLC Breakers Control Design ]](#power-grid-simulation-system---plc-breakers-control-design--)
+    + [Introduction](#introduction)
+    + [Physical Device Connection](#physical-device-connection)
+    + [PLC Ladder Logic Design](#plc-ladder-logic-design)
+    + [SCADA HMI Integration and Alert Handling](#scada-hmi-integration-and-alert-handling)
+    + [Digital Equivalent Simulation System](#digital-equivalent-simulation-system)
+    + [Reference Link](#reference-link)
+
 ------
 
 ### Introduction
