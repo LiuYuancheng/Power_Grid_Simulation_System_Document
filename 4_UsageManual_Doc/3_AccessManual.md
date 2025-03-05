@@ -7,7 +7,7 @@ This document provides detailed instructions on remotely accessing various VMs i
 ```
 # Author:      Yuancheng Liu
 # Created:     2025/02/18
-# Version:     v_0.0.1
+# Version:     v_0.0.2
 # DocNum:      Wiki_4_3
 ```
 
@@ -17,7 +17,7 @@ This document provides detailed instructions on remotely accessing various VMs i
 
 ### Introduction
 
-The Power Grid Simulation System is hosted within the NUS-NCL infrastructure, enabling users to access and interact with the system remotely. Multiple instances of the environment can be deployed based on user-specific needs, such as cybersecurity exercises or training sessions.
+The Power Grid Simulation System is hosted within the NUS-NCL cloud infrastructure, enabling users to access and interact with the system remotely. Multiple instances of the environment can be deployed based on user-specific needs, such as cybersecurity exercises or training sessions.
 
 To ensure seamless remote access, we offer multiple connectivity options tailored to user preferences:
 
@@ -53,10 +53,27 @@ Users will receive admin credentials for each VM in the environment. These crede
 | 7    | Small_PG_SCADA_RTU_0X    | Ubuntu  | 10.10.xxx.15 | `ncl`    | `*******` |
 | 8    | Small_PG_SCADA_HMI_0X    | Win 10  | 10.10.xxx.16 | `ncl`    | `*******` |
 | 9    | Small_PG_PW_PowerGrid_0X | Win 10  | 10.10.xxx.17 | `ncl`    | `*******` |
+| 10   | Transaction VM           | Win 10  | 10.10.xxx.20 | `spg`    | `*******` |
 
 **[3] NCL Gateway Username and Password**
 
-A gateway account is provided for accessing the environment via SSH. Port forwarding is required to connect directly to individual VMs from the internet.
+A gateway account is provided for accessing the environment via SSH. Port forwarding is required to connect directly to individual VMs from the internet. We will also provide on transaction VM account for user to install the tools on the VM and test their monitor, attack & defense test solution. 
+
+The ssh login command is shown below:
+
+```
+ssh -J <Jump Host User name >@gateway.ncl.sg,<router user name>@172.18.xxx.xxx:<port> ncl@10.10.xxx.xxx
+```
+
+
+
+------
+
+### Environment Network Diagram
+
+The environment network diagram is shown below:
+
+![](img/s_10.png)
 
 ------
 
@@ -106,7 +123,7 @@ Then you can then check the PLC simulation program’s execution status:
 If you wish to connect directly to a VM from the internet, use the **[3] NCL Gateway Username and Password** and port forwarding. The command format is as follows:
 
 ```
-ssh -p <portnumber> -J <username>@gateway.ncl.sg ncl@172.18.178.17
+ssh -J <Jump Host User name >@gateway.ncl.sg,<router user name>@172.18.xxx.xxx:<port> ncl@10.10.xxx.xxx
 ```
 
 
