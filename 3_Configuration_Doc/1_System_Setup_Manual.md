@@ -212,13 +212,13 @@ mv powerGridPWConfig_template.txt powerGridPWConfig.txt
 sudo python3 PowerGridPWRun.py
 ```
 
-For Windows OS system: 
+For Windows OS system: Double click the `src/runPW_PowerGrid_win.bat`
 
-Double click the `src/runPW_PowerGrid_win.bat`
-
-**Run the weather information fetcher**
+##### Run the weather information fetcher
 
 Set the city string in the config file.
+
+For Linux System run below cmds:
 
 ```bash
 cd src/weatherFetcher
@@ -226,18 +226,23 @@ mv weatherConfig_template.txt weatherConfig.txt
 sudo python3 weatherFetcher.py
 ```
 
-- For Windows user after change the config file name, double click the `src/runWea_PowerGrid_win.bat`
+For Windows OS system: After change the config file name, double click the `src/runWea_PowerGrid_win.bat`
 
-**Run the power link program**
+##### Run the power link program
+
+For Linux System run below cmds:
 
 ```bash
 cd src/powerlink
+mv powerLinkConfig_template.json powerLinkConfig.json
 python PowerLinkRun.py
 ```
 
-- For Windows user after change the config file name, double click the `src/runLINK_PowerGrid_win.bat`
+For Windows OS system:  After change the config file name, double click the `src/runLINK_PowerGrid_win.bat`
 
-**Run the PLC simulator**
+##### Run the PLC simulator
+
+For Linux System run below cmds:
 
 ```bash
 cd src/plcCtrl
@@ -245,10 +250,11 @@ mv plcConfig_template.txt plcConfig.txt
 sudo python3 plcSimulatorPwr.py
 ```
 
-- For Windows user after change the config file name, double click the `src/runPLC_PowerGrid_win.bat`
+For Windows OS system: After change the config file name, double click the `src/runPLC_PowerGrid_win.bat`
 
+##### Run the RTU simulator
 
-**Run the RTU simulator**
+For Linux System run below cmds:
 
 ```bash
 cd src/rtuCtrl
@@ -256,9 +262,11 @@ mv rtuConfig_template.txt rtuConfig.txt
 sudo python3 rtuSimulatorPower.py
 ```
 
-- For Windows user after change the config file name, double click the `src/runRTU_PowerGrid_win.bat`
+For Windows OS system: After change the config file name, double click the `src/runRTU_PowerGrid_win.bat`
 
 **Run the Scada HMI simulator**
+
+For Linux System run below cmds:
 
 ```bash
 cd src/ScadaHMI
@@ -266,7 +274,7 @@ mv scadaHMIConfig_template.txt scadaHMIConfig.txt
 sudo python3 ScadaHMIRun.py
 ```
 
-- For Windows user after change the config file name, double click the `src/runHMI_PowerGrid_win.bat`
+For Windows OS system: After change the config file name, double click the `src/runHMI_PowerGrid_win.bat`
 
 
 
@@ -281,4 +289,3 @@ To deploy the system in a network under below network topology, please refer to 
 ------
 
 > last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 09/04/2025 if you have any question, please send me a message. 
-
