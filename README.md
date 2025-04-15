@@ -1,4 +1,4 @@
-# Power_Grid_Simulation_System_Document
+# Power_Grid_Simulation_System_Document [Wiki]
 
 The **Mini OT Power Grid Simulation System** is a digital equivalent software platform designed to simulate the core operations of a hybrid power grid system, including hybrid power generation (natural gas power plants, solar power plants, and wind turbine farms), high-voltage power transmission and a three-level step-down power distribution system. The simulation integrates a SCADA system that incorporates PLCs for remote system control, RTUs and MUs for real-time data monitoring, and an HMI interface for operators to manage the grid. 
 
@@ -16,6 +16,18 @@ This repository provides a document Wiki for the "Power Grid Simulation System" 
 **Table of Contents**
 
 [TOC]
+
+- [Power_Grid_Simulation_System_Document [Wiki]](#power-grid-simulation-system-document--wiki-)
+    + [Project Design Purpose and Background](#project-design-purpose-and-background)
+    + [Project Introduction](#project-introduction)
+    + [System Structure](#system-structure)
+    + [Project Document List](#project-document-list)
+      - [[1] Introduction Documents](#-1--introduction-documents)
+      - [[2] Software Design Documents](#-2--software-design-documents)
+      - [[3] System Configuration Documents](#-3--system-configuration-documents)
+      - [[4] System Usage Documents](#-4--system-usage-documents)
+      - [[5] Cyber Security Case Study Documents](#-5--cyber-security-case-study-documents)
+      - [[6] Reference Documents](#-6--reference-documents)
 
 ------
 
@@ -131,9 +143,18 @@ This section will list the document files in each Wiki folder
 
 #### [5] Cyber Security Case Study Documents
 
+- The document about demo cyber attack by using the system
+- Folder : `5_CaseStudy_Doc`
 
+| File Name            | Wiki Index | Version | Description                                                  | Doc Link                                   |
+| -------------------- | ---------- | ------- | ------------------------------------------------------------ | ------------------------------------------ |
+| `1_CaseStudy_FDI.md` | Wiki_5_1   | v_0.2.0 | The false data injection attack case study introduction document | [Link](5_CaseStudy_Doc/1_CaseStudy_FDI.md) |
+|                      |            |         |                                                              |                                            |
 
+#### [6] Reference Documents 
 
+- The technical documents, produce manual and papers used as reference to develop the system. 
+- Folder : `reference`
 
 
 
