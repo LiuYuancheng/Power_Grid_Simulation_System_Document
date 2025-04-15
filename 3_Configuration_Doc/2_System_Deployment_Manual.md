@@ -72,7 +72,7 @@ This section will use the previous section as an example to deploy the program o
 - Rename the `src/RailwayPhysicalWorldSimu/configFiles/metroConfig_template.txt` to `src/RailwayPhysicalWorldSimu/configFiles/metroConfig.txt` . 
 - Since the railway system acts as the power customer in this deployment, update the configuration file to enable test mode by setting the flag to `True` (line 9). The modified section should look like this:
 
-```
+```python
 # This is the config file template for the railway system module <RailwayPWSimuRun.py>
 # Setup the parameters with below format (every line follow <key>:<value> format, the
 # key can not be changed):
@@ -231,7 +231,7 @@ Replace `Singapore` with the name of your desired city and update the IP address
 - Rename the `src/plcCtrl/plcConfig_template.txt` to `src/plcCtrl/plcConfig.txt` 
 - Open the configuration file and update it as shown below.
 
-```
+```python
 # This is the config file template for the module <plcSimulatorPwr.py>
 # Setup the parameter with below format (every line follow <key>:<val> format, the
 # key can not be changed):
@@ -285,7 +285,7 @@ MD_BUS_PORT:502
 - Rename the `src/rtuCtrl/rtuConfig_template.txt` to `src/rtuCtrl/rtuConfig.txt` 
 - Open the configuration file and update it as shown below.
 
-```
+```python
 # This is the config file template for the module <rtuSimulatorPower.py>
 # Setup the parameter with below format (every line follow <key>:<val> format, the
 # key can not be changed):
@@ -332,7 +332,7 @@ The human machine interface program is used to connect to the PLC&RTU to remote 
 - Rename the `src/ScadaHMI/scadaHMIConfig_template.txt` to `src/ScadaHMI/scadaHMIConfig.txt` 
 - Open the configuration file and update it as shown below.
 
-```
+```python
 # This is the config file template for the module <ScadaHMIRun.py>
 # Setup the parameter with below format (every line follows <key>:<val> format, the
 # key can not be changed):

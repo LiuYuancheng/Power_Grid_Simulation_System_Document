@@ -113,14 +113,15 @@ This section will list the document files in each Wiki folder
 - The document to setup the system in a environment. 
 - Folder : `3_Configuration_Doc`
 
-| File Name                  | Wiki Index | Version | Description              | Doc Link                                             |
-| -------------------------- | ---------- | ------- | ------------------------ | ---------------------------------------------------- |
-| `1_System_Setup_Manual.md` | Wiki_3_1   | v_0.2.0 | The system setup manual. | [Link](3_Configuration_Doc/1_System_Setup_Manual.md) |
-|                            |            |         |                          |                                                      |
+| File Name                       | Wiki Index | Version | Description                                                  | Doc Link                                                  |
+| ------------------------------- | ---------- | ------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| `1_System_Setup_Manual.md`      | Wiki_3_1   | v_0.2.0 | The system environment setup manual.                         | [Link](3_Configuration_Doc/1_System_Setup_Manual.md)      |
+| `2_System_Deployment_Manual.md` | Wiki_3_1   | v_0.2.0 | Detailed instruction deployment manual to setup environment in network | [Link](3_Configuration_Doc/2_System_Deployment_Manual.md) |
+|                                 |            |         |                                                              |                                                           |
 
 #### [4] System Usage Documents
 
-- The document to remote access and use the 
+- The document to remote access and use the system.
 - Folder : `4_UsageManual_Doc`
 
 | File Name           | Wiki Index | Version | Description                     | Doc Link                                    |
@@ -128,7 +129,13 @@ This section will list the document files in each Wiki folder
 | `3_AccessManual.md` | Wiki_4_3   | v_0.2.0 | The system remote access manual | [Link](4_UsageManual_Doc/3_AccessManual.md) |
 |                     |            |         |                                 |                                             |
 
-#### 
+#### [5] Cyber Security Case Study Documents
+
+
+
+
+
+
 
 ------
 
