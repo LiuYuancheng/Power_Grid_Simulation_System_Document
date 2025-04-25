@@ -160,11 +160,84 @@ In the current version, A total of 20 Measurement Units (MUs), 8 IED and 2 RTU a
 
 **Power Distribution System:**
 
-| Idx  | MU Set ID           | Sensor Num | Connected Components             | Metering Data                |
-| ---- | ------------------- | ---------- | -------------------------------- | ---------------------------- |
-| 15   | Lvl0-Transformer-MU | 3          | Level 0 Step-Down Transformer    | Work State, Voltage, Current |
-| 16   | Station-Cus-MU      | 3          | Station Power Customer (Railway) | Work State, Voltage, Current |
-| 17   | Lvl1-Transformer-MU | 3          | Level 1 Step-Down Transformer    | Work State, Voltage, Current |
-| 18   | Primary-Cus-MU      | 3          | Primary Power Customer (Factory) | Work State, Voltage, Current |
-| 19   | Lvl2-Transformer-MU | 3          | Level 2 Step-Down Transformer    | Work State, Voltage, Current |
-| 20   | Secondary-Cus-MU    | 3          | Secondary Power Customer (Home)  | Work State, Voltage, Current |
+| Idx  | MU Set ID              | Sensor Num | Connected Components             | Metering Data                |
+| ---- | ---------------------- | ---------- | -------------------------------- | ---------------------------- |
+| 15   | Lvl0-Transformer-MU    | 3          | Level 0 Step-Down Transformer    | Work State, Voltage, Current |
+| 16   | Station-Customer-MU    | 3          | Station Power Customer (Railway) | Work State, Voltage, Current |
+| 17   | Lvl1-Transformer-MU    | 3          | Level 1 Step-Down Transformer    | Work State, Voltage, Current |
+| 18   | Primary-Customer-MU    | 3          | Primary Power Customer (Factory) | Work State, Voltage, Current |
+| 19   | Lvl2-Transformer-MU    | 3          | Level 2 Step-Down Transformer    | Work State, Voltage, Current |
+| 20   | Secondary-Customer- MU | 3          | Secondary Power Customer (Home)  | Work State, Voltage, Current |
+
+For the network topology, the system is designed as shown below: 
+
+![](img/s_22.png)
+
+For the IED to RTU S7Comm connection, this is one packet example:
+
+```
+S7 Communication
+    Header: (Job)
+    Parameter: (Read Var)
+        Function: Read Var (0x04)
+        Item count: 1
+        Item [1]: (DB 1.DBX 0.0 BYTE 8)
+            Variable specification: 0x12
+            Length of following address specification: 10
+            Syntax Id: S7ANY (0x10)
+            Transport size: BYTE (2)
+            Length: 8
+            DB number: 1
+            Area: Data blocks (DB) (0x84)
+            Address: 0x000000
+                .... .000 0000 0000 0000 0... = Byte Address: 0
+                .... .... .... .... .... .000 = Bit Address: 0
+S7 Communication
+    Header: (Ack_Data)
+    Parameter: (Read Var)
+        Function: Read Var (0x04)
+        Item count: 1
+    Data
+        Item [1]: (Success)
+            Return code: Success (0xff)
+            Transport size: BYTE/WORD/DWORD (0x04)
+            Length: 8
+```
+
+Table map from IED to RTU Data block[0x84] 's memory address and 'Byte Index with the value and unit:
+
+| Index | Metering Unit On Physical World                     | Unit | Memory Idx | Byte index | Data type |
+| ----- | --------------------------------------------------- | ---- | ---------- | ---------- | --------- |
+| 1     | Solar panel generator output voltage                | V    | 1          | 0          | int       |
+| 2     | Solar panel generator output current                | A    | 1          | 2          | int       |
+| 3     | Solar step up transformer1 output voltage           | kV   | 1          | 4          | int       |
+| 4     | Solar step up transformer1 output current           | A    | 1          | 6          | int       |
+| 5     | Wind Turbine generator output voltage               | kV   | 2          | 0          | int       |
+| 6     | Wind Turbine generator output current               | A    | 2          | 2          | int       |
+| 7     | Wind step up transformer2 output voltage            | kV   | 2          | 4          | int       |
+| 8     | Wind step up transformer2 output current            | A    | 2          | 6          | int       |
+| 9     | Gen-Driven motor1-RPM                               | RPM  | 3          | 0          | int       |
+| 10    | Generator1 output voltage                           | kV   | 3          | 2          | int       |
+| 11    | Generator1 output current                           | A    | 3          | 4          | int       |
+| 12    | Power storage 1 battery charging state              | -    | 3          | 6          | bool      |
+| 13    | Gen-Driven motor2-RPM                               | RPM  | 4          | 0          | int       |
+| 14    | Generator2 output voltage                           | kV   | 4          | 2          | int       |
+| 15    | Generator2 output current                           | A    | 4          | 4          | int       |
+| 16    | Power storage 2 battery charging state              | -    | 4          | 6          | bool      |
+| 17    | Gen-Driven motor3-RPM                               | RPM  | 5          | 0          | int       |
+| 18    | Generator 3 (backup) output voltage                 | kV   | 5          | 2          | int       |
+| 19    | Generator 3 (backup) output current                 | A    | 5          | 4          | int       |
+| 20    | Power storage 3 battery charging state              | -    | 5          | 6          | bool      |
+| 21    | Substation to transmission tower output voltage     | kV   | 6          | 0          | int       |
+| 22    | Substation to transmission tower output current     | A    | 6          | 2          | int       |
+| 23    | Transmission tower to distribution input voltage    | kV   | 6          | 4          | int       |
+| 24    | Transmission tower to distribution input current    | A    | 6          | 6          | int       |
+| 25    | Step up transformer3 output voltage                 | kV   | 7          | 0          | int       |
+| 26    | Step up transformer4 output voltage                 | A    | 7          | 2          | int       |
+| 27    | Level 0 step down transformer to railway  voltage   | kV   | 7          | 4          | int       |
+| 28    | Level 0 step down transformer to railway  current   | A    | 7          | 6          | int       |
+| 29    | Level 1 step down transformer to factor voltage     | kV   | 8          | 0          | int       |
+| 30    | Level 1 step down transformer to factor current     | A    | 8          | 2          | int       |
+| 31    | Level 2 step down transformer to smart home voltage | V    | 8          | 4          | int       |
+| 32    | Level 2 step down transformer to smart home current | A    | 8          | 6          | int       |
+
