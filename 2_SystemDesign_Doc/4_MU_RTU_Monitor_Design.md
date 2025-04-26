@@ -1,8 +1,8 @@
 # Power_Grid_Simulation_System [ MU-IED-RTU Monitor Flow Design ]
 
-**Project Design Purpose** : This document provides a detailed overview of the monitoring subsystem inn OT power grid simulation environment, with a focus on the MU-IED-RTU Monitor Flow Design. It examines the functions and interactions of Metering Units (MU), Intelligent Electronic Devices (IED), and Remote Terminal Units (RTU) within the state monitoring architecture of a real-world power grid. The content is organized into three main sections:
+**Project Design Purpose** : This document provides a detailed overview of the monitoring subsystem in an OT Power Grid Simulation Cyber Physical  environment, with focusing on the detail information about MU-IED-RTU Monitor Flow Design. It examines the functions and interactions of Metering Units (MU), Intelligent Electronic Devices (IED), and Remote Terminal Units (RTU) within the state monitoring architecture of a real-world energy system. The content is organized into three main sections:
 
-- An introduction to the core functions of MU, IED, and RTU devices, and how they work together to enable real-time monitoring and control of the grid.
+- An introduction to the core functions of MU, IED, and RTU devices, and how they work together to enable real-time monitoring and control of the power grid.
 - A detailed explanation of how these components are digitally replicated within our power grid simulation system. 
 - A technical breakdown of the software design, communication architecture, and monitoring workflow that underpin the operation of this digital twin environment.
 
@@ -19,15 +19,15 @@
 
 [TOC]
 
-
-
 ------
 
 ### Project Introduction 
 
 In modern Operational Technology (OT)-based power grid monitoring systems, **Metering Units (MU)**, **Intelligent Electronic Devices (IED)**, and **Remote Terminal Units (RTU)** play critical roles in ensuring real-time state awareness and control. These devices are integral to digital substations that operate under the IEC 61850 standard, which defines the communication protocols and data models for substation automation.
 
-The following diagram illustrates a simplified view of how MUs, IEDs, and RTUs interact under IEC 61850 communication architecture:
+![](img/s_16.png)
+
+The following diagram illustrates a simplified view of how MUs, IEDs, and RTUs interact with each other and other OT devices under IEC 61850 communication architecture:
 
 ![](img/s_17.png)
 
@@ -41,7 +41,7 @@ This project aims to walk through the design and simulation of a digital twin sy
 
 - **Physical device background knowledge**: Understanding the roles and functions of MU, IED, and RTU in real-world deployments.
 
-- **RTU internal logic design**: Developing programmable logic (e.g., using virtual PLCs) to manage breaker operations and automation.
+- **RTU internal logic design**: Developing programmable logic to verify and manage the power circuit state, operations and automation.
 
 - **SCADA HMI integration**: Implementing SCADA-based visualization and control interfaces for grid state management.
 
@@ -53,6 +53,8 @@ To support this implementation, two open-source subprojects are used:
 
 - [**Python Virtual PLC & RTU Simulator**](https://github.com/LiuYuancheng/Power_Grid_Simulation_System): A tool for emulating PLC/RTU logic and behavior.
 - [**Power Grid Simulation System**](https://github.com/LiuYuancheng/PLC_and_RTU_Simulator): A platform that simulates power grid devices and integrates SCADA HMI functionality for testing and visualization.
+
+
 
 ------
 
@@ -76,7 +78,7 @@ A **Remote Terminal Unit (RTU)** is a ruggedized hardware device deployed in pow
 
 #### Difference between RTU and PLC
 
-A **Remote Terminal Unit (RTU)** and a **Programmable Logic Controller (PLC)** are both critical to industrial automation but serve distinct roles. An RTU specializes in *remote monitoring and control* across geographically dispersed systems, such as power grids, by collecting data from field devices (e.g., sensors, breakers) and transmitting it to centralized SCADA systems using protocols like DNP3 or IEC 60870-5. RTUs prioritize ruggedness, long-range communication, and low power consumption for harsh or isolated environments. In contrast, a PLC focuses on *localized real-time control* of machinery or processes (e.g., assembly lines, breaker logic) using ladder logic programming. PLCs excel in high-speed, deterministic operations and interface directly with sensors/actuators via industrial protocols like Modbus or PROFINET. While modern systems blur these lines—with hybrid devices integrating RTU-PLC functionalities—the core distinction remains: RTUs bridge *data communication* between remote sites and control centers, whereas PLCs execute *automated control logic* at the edge. In power grid simulations, RTUs emulate wide-area data aggregation, while PLCs model localized breaker control algorithms, highlighting their complementary roles in grid automation.
+A **Remote Terminal Unit (RTU)** and a **Programmable Logic Controller (PLC)** are both critical to industrial automation but serve distinct roles. An RTU specializes in remote monitoring and control across geographically dispersed systems, such as power grids, by collecting data from field devices (e.g., sensors, breakers) and transmitting it to centralized SCADA systems using protocols like DNP3 or IEC 60870-5 MMS. RTUs prioritize ruggedness, long-range communication, and low power consumption for harsh or isolated environments. In contrast, a PLC focuses on localized real-time control of machinery or processes (e.g., assembly lines, breaker logic) using ladder logic programming. PLCs excel in high-speed, deterministic operations and interface directly with sensors/actuators via industrial protocols like Modbus or PROFINET. While modern systems blur these lines—with hybrid devices integrating RTU-PLC functionalities—the core distinction remains: RTUs bridge data communication between remote sites and control centers, whereas PLCs execute automated control logic at the edge. In power grid simulations, RTUs emulate wide-area data aggregation, while PLCs model localized breaker control algorithms, highlighting their complementary roles in grid automation.
 
 > Reference: https://galooli.com/glossary/what-is-rtu/
 
@@ -88,20 +90,20 @@ A **Remote Terminal Unit (RTU)** and a **Programmable Logic Controller (PLC)** a
 
 In our digital twin power grid simulation, the Remote Terminal Unit (RTU) plays a central role in data aggregation, validation, and anomaly detection. It integrates real-time input from Metering Units (MU), Intelligent Electronic Devices (IED), and Programmable Logic Controllers (PLC) to simulate the behavior and logic of a real-world substation RTU.
 
-The RTU is programmed to monitor the electrical flow between power sources (e.g., **generators**, **transformers**) and power consumers (e.g., **breakers**, **next-level devices**) by verifying signal consistency and detecting operational faults. As illustrated in the system diagram shown below, each power source and load point is monitored by a corresponding **MU-IED pair**, and the RTU orchestrates data from multiple sources for high-level decision making.
+The RTU is programmed to monitor the electrical flow between power sources (e.g., generators, transformers) and power consumers (e.g., breakers, next-level devices) by verifying signal consistency and detecting operational faults. As illustrated in the system diagram shown below, each power source and load point is monitored by a corresponding MU-IED pair, and the RTU orchestrates data from multiple sources for high-level decision making.
 
 ![](img/s_20.png)
 
-**RTU Workflow and Logic Implementation:**
+#### RTU Workflow and Logic Implementation
 
 - Metering Units (MU) collect voltage (V) and current (A) readings at both the output of power sources and the input of power loads.
 - IEDs receive the MU data and compare it against preset safety thresholds. If voltage or current readings are outside safe ranges, IEDs raise local alerts.
 - IEDs then calculate power flow values (e.g., apparent power S, real power P, energy imbalance) and send both raw sensor values and calculated data to the RTU via S7Comm protocol.
 - The PLC monitors circuit breaker states (ON/OFF) and sends this digital signal to the RTU via Modbus-TCP.
 
-**RTU Safety Logic Rules Example:**
+#### RTU Safety Logic Rules Example
 
-The RTU internal logic will detect and evaluate the current system working state, below is an example rule. 
+The RTU internal logic will detect and evaluate the current system working state, below is an example rule current our power grid simulation system provided:
 
 - If the breaker is ON:
   - If `V1 - V2` ≥ *voltage drop threshold* → Raise `Transmission Line Voltage Drop Alert`
@@ -112,11 +114,11 @@ The RTU internal logic will detect and evaluate the current system working state
 
 This safety logic is replicated across all MU-IED pairs (MU01–MU04), enabling end-to-end monitoring from generator output to next-level device input. If any error or abnormality occurs in the simulated grid, the system can immediately pinpoint the fault location based on the alerting MU and IED.
 
-**Communication and Integration**
+#### Communication and Integration
 
 The RTU seamlessly integrates:
 
-- Sensor and breaker data via Modbus-TCP from the PLC,
+- Sensors and breakers data via Modbus-TCP from the PLC,
 - Electrical measurements and calculations via S7Comm from IEDs,
 - Radio communication channel to forward processed data to the SCADA-HMI system for remote supervision and visualization.
 
@@ -126,13 +128,19 @@ The RTU seamlessly integrates:
 
 ### Digital Equivalent System Simulation
 
-In our power grid simulation system, we simulate the power grid data flow as shown below:
+In our power grid simulation system, we replicate the entire data flow of a physical-world smart grid through a Digital Equivalent System Simulation. As shown in the diagrams, the simulation begins with the 2D Power Grid Physical-world Simulation Program, where sensor data—such as voltage, current, and equipment states—is generated based on simulated activities across the grid's power generation, transmission, and distribution sections. These raw sensor values are captured by Measurement Units (MUs) and converted into standardized digital values via UDP-based signal simulation.
 
 ![](img/s_21.png)
 
-The data will generated by the physical world simulation program's sensors, then send to the physical world simulators' MU and covert to digital value, then the value will send to IED program to do the 1st verification and calculation, then IED will send the data to RTU via S7Comm, the RTU will to further data process and send all the power grid data SCADA data receiver via Manufacturing Message Specification (MMS). After that the data will be visualized on the power grid Operation room's HMI. 
+The Measurement Units feed their data into Intelligent Electronic Devices (IEDs), which perform the first layer of validation and calculation. Verified data is then transmitted to Remote Terminal Units (RTUs) over an S7Comm bus, simulating industrial communication protocols. The RTUs handle further processing, aggregation, and relay the structured data to the Supervisory Control and Data Acquisition (SCADA) system using the Manufacturing Message Specification (MMS) protocol over a simulated radio network. Finally, the processed information is visualized on the Power Grid Supervisory Human-Machine Interface (HMI), allowing operators to monitor real-time system performance, equipment status, and grid metrics.
 
-In the current version, A total of 20 Measurement Units (MUs), 8 IED and 2 RTU are integrated within the system, spanning the power generation, transmission, and distribution sections of the grid. Each unit is linked to specific components to provide comprehensive monitoring:
+In the current simulation setup, the system integrates a total of **20 Measurement Units (MUs)**, **8 Intelligent Electronic Devices (IEDs)**, and **2 Remote Terminal Units (RTUs)**. These components provide detailed monitoring and control across different sectors:
+
+- **Power Generation** includes solar farms, wind farms, energy storage systems, conventional generators, and their associated transformers.
+- **Power Transmission** covers substations, transmission lines, and storage facilities.
+- **Power Distribution** simulates multi-level step-down transformers and customer power delivery to sectors such as industrial factories, railway stations, and residential homes.
+
+The MU and sensor detail information is shown below:
 
 **Power Generation System:**
 
@@ -169,11 +177,13 @@ In the current version, A total of 20 Measurement Units (MUs), 8 IED and 2 RTU a
 | 19   | Lvl2-Transformer-MU    | 3          | Level 2 Step-Down Transformer    | Work State, Voltage, Current |
 | 20   | Secondary-Customer- MU | 3          | Secondary Power Customer (Home)  | Work State, Voltage, Current |
 
-For the network topology, the system is designed as shown below: 
+#### System Network Communication Detail 
+
+Each MU is connected to specific simulated physical components and captures detailed metrics like work state, voltage, current, RPM, storage percentage, and more, depending on the device’s nature and role in the system. The whole system network and data communication diagram is shown below:
 
 ![](img/s_22.png)
 
-For the IED to RTU S7Comm connection, this is one packet example:
+The network topology follows a layered structure where field-level MUs and IEDs communicate upwards through RTUs to SCADA, effectively simulating a realistic IEC 61850-based Smart Grid environment. This enables comprehensive testing and visualization of normal operations, fault scenarios, and recovery processes under controlled digital conditions. For the IED to RTU S7Comm connection, this is one packet example:
 
 ```
 S7 Communication
@@ -241,3 +251,16 @@ Table map from IED to RTU Data block[0x84] 's memory address and 'Byte Index wit
 | 31    | Level 2 step down transformer to smart home voltage | V    | 8          | 4          | int       |
 | 32    | Level 2 step down transformer to smart home current | A    | 8          | 6          | int       |
 
+
+
+------
+
+### Conclusion
+
+The Power Grid Simulation System: MU-IED-RTU Monitor Flow Design document presents a detailed overview of the monitoring architecture within an OT-based digital twin power grid environment. It explains the roles and interactions of Metering Units (MUs), Intelligent Electronic Devices (IEDs), and Remote Terminal Units (RTUs) in real-time grid monitoring and control, following IEC 61850 standards. The document covers the digital replication of physical devices, the internal logic design of RTUs for anomaly detection, and the end-to-end communication workflow that integrates PLCs, SCADA systems, and field devices. Through a comprehensive simulation involving 20 MUs, 8 IEDs, and 2 RTUs, the system models power generation, transmission, and distribution operations, enabling realistic fault handling, data aggregation, and grid state visualization.
+
+
+
+------
+
+> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 13/02/2025 if you have any question, please send me a message. 
