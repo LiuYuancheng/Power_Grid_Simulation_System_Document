@@ -19,6 +19,21 @@
 
 [TOC]
 
+- [Power_Grid_Simulation_System [ MU-IED-RTU Monitor Flow Design ]](#power-grid-simulation-system---mu-ied-rtu-monitor-flow-design--)
+    + [Project Introduction](#project-introduction)
+    + [Background Knowledge of Physical Devices](#background-knowledge-of-physical-devices)
+      - [What is a Metering Unit (MU)?](#what-is-a-metering-unit--mu--)
+      - [What is an Intelligent Electronic Device (IED)?](#what-is-an-intelligent-electronic-device--ied--)
+      - [What is a Remote Terminal Unit (RTU)?](#what-is-a-remote-terminal-unit--rtu--)
+      - [Difference between RTU and PLC](#difference-between-rtu-and-plc)
+    + [RTU Internal Logic Design](#rtu-internal-logic-design)
+      - [RTU Workflow and Logic Implementation](#rtu-workflow-and-logic-implementation)
+      - [RTU Safety Logic Rules Example](#rtu-safety-logic-rules-example)
+      - [Communication and Integration](#communication-and-integration)
+    + [Digital Equivalent System Simulation](#digital-equivalent-system-simulation)
+      - [System Network Communication Detail](#system-network-communication-detail)
+    + [Conclusion](#conclusion)
+
 ------
 
 ### Project Introduction 
@@ -27,9 +42,13 @@ In modern Operational Technology (OT)-based power grid monitoring systems, **Met
 
 ![](img/s_16.png)
 
+` Figure-00: Project Overview Diagram, version v0.2.0 (2025)`
+
 The following diagram illustrates a simplified view of how MUs, IEDs, and RTUs interact with each other and other OT devices under IEC 61850 communication architecture:
 
 ![](img/s_17.png)
+
+` Figure-01: IEC 61850 MU-IED-RTU connection diagram, version v0.2.0 (2025)`
 
 At the field level, **Metering Units (MU)** act as data acquisition interfaces that convert analog signals (such as voltage and current from electrical sensors) into digital Sampled Values (SV). These SV messages are transmitted over the **IEC 61850 Process Bus** to the IEDs.
 
@@ -64,6 +83,8 @@ This section provides a foundational understanding of the core physical devices 
 
 ![](img/s_19.png)
 
+` Figure-02: IEC 61850 MU IED RTU Overview diagram, version v0.2.0 (2025)`
+
 #### What is a Metering Unit (MU)?
 
 A **power grid metering unit (MU)** is a critical device in electrical systems designed to measure, record, and communicate real-time electrical parameters such as voltage, current, power, frequency, and energy consumption across a power grid. Functioning as the "sensory layer" of the grid, MUs use high-precision sensors (e.g., current transformers, voltage transformers) to capture raw analog signals from transmission lines, substations, or distributed energy resources. These signals are then digitized and processed into standardized data formats (e.g., IEC 61850-9-2 Sampled Values) for compatibility with downstream systems.
@@ -93,6 +114,8 @@ In our digital twin power grid simulation, the Remote Terminal Unit (RTU) plays 
 The RTU is programmed to monitor the electrical flow between power sources (e.g., generators, transformers) and power consumers (e.g., breakers, next-level devices) by verifying signal consistency and detecting operational faults. As illustrated in the system diagram shown below, each power source and load point is monitored by a corresponding MU-IED pair, and the RTU orchestrates data from multiple sources for high-level decision making.
 
 ![](img/s_20.png)
+
+` Figure-03: Simulated Power Grid MU IED RTU connection diagram, version v0.2.0 (2025)`
 
 #### RTU Workflow and Logic Implementation
 
@@ -131,6 +154,8 @@ The RTU seamlessly integrates:
 In our power grid simulation system, we replicate the entire data flow of a physical-world smart grid through a Digital Equivalent System Simulation. As shown in the diagrams, the simulation begins with the 2D Power Grid Physical-world Simulation Program, where sensor data—such as voltage, current, and equipment states—is generated based on simulated activities across the grid's power generation, transmission, and distribution sections. These raw sensor values are captured by Measurement Units (MUs) and converted into standardized digital values via UDP-based signal simulation.
 
 ![](img/s_21.png)
+
+` Figure-03: Power Grid Simulation MU IED RTU workflow diagram, version v0.2.0 (2025)`
 
 The Measurement Units feed their data into Intelligent Electronic Devices (IEDs), which perform the first layer of validation and calculation. Verified data is then transmitted to Remote Terminal Units (RTUs) over an S7Comm bus, simulating industrial communication protocols. The RTUs handle further processing, aggregation, and relay the structured data to the Supervisory Control and Data Acquisition (SCADA) system using the Manufacturing Message Specification (MMS) protocol over a simulated radio network. Finally, the processed information is visualized on the Power Grid Supervisory Human-Machine Interface (HMI), allowing operators to monitor real-time system performance, equipment status, and grid metrics.
 
@@ -182,6 +207,8 @@ The MU and sensor detail information is shown below:
 Each MU is connected to specific simulated physical components and captures detailed metrics like work state, voltage, current, RPM, storage percentage, and more, depending on the device’s nature and role in the system. The whole system network and data communication diagram is shown below:
 
 ![](img/s_22.png)
+
+` Figure-03: Power Grid Simulation system OT device communication diagram, version v0.2.0 (2025)`
 
 The network topology follows a layered structure where field-level MUs and IEDs communicate upwards through RTUs to SCADA, effectively simulating a realistic IEC 61850-based Smart Grid environment. This enables comprehensive testing and visualization of normal operations, fault scenarios, and recovery processes under controlled digital conditions. For the IED to RTU S7Comm connection, this is one packet example:
 
@@ -263,4 +290,4 @@ The Power Grid Simulation System: MU-IED-RTU Monitor Flow Design document presen
 
 ------
 
-> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 13/02/2025 if you have any question, please send me a message. 
+> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 26/04/2025 if you have any question, please send me a message. 
