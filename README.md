@@ -117,7 +117,8 @@ This section will list the document files in each Wiki folder
 | ---------------------------------- | ---------- | ------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
 | `1_System_Design.md`               | Wiki_2_1   | v_0.2.0 | The main system design introduction.                         | [Link](2_SystemDesign_Doc/1_System_Design.md)               |
 | `2_PLC_Breakers_Control_Design.md` | Wiki_2_2   | v_0.2.0 | The program PLC simulator breakers control flow design introduction. | [Link](2_SystemDesign_Doc/2_PLC_Breakers_Control_Design.md) |
-| `3_Network_Packet_Design.md`       | Wiki_2_3   | v_0.2.0 | OT network communication design document.                    | [Link](2_SystemDesign_Doc/3_Network_Packet_Design.md)       |
+| `3_Network_Packet_Design.md`       | Wiki_2_3   | v_0.2.0 | lvl2 OT network communication design document.               | [Link](2_SystemDesign_Doc/3_Network_Packet_Design.md)       |
+| `4_MU_RTU_Monitor_Design.md`       | Wiki_2_4   | v_0.2.0 | The MU-IED-RTU simulation work flow design introduction      | [Link](2_SystemDesign_Doc/4_MU_RTU_Monitor_Design.md)       |
 |                                    |            |         |                                                              |                                                             |
 
 #### [3] System Configuration Documents
