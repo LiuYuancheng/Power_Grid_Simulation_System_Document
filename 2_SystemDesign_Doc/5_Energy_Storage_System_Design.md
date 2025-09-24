@@ -1,15 +1,19 @@
 # Design of Energy Storage System In Power Grid OT Cyber Range
 
-**Project Design Purpose** : This Article will introduce the battery based energy storage system (BESS) we design in the OT Power Grid Simulation Cyber Physical environment I developed. This simulated grid large-scale energy storage systems help balance supply and demand by storing excess electricity from the renewables energy generators (solar and wind) releasing it when needed. They further provide essential grid services , such as helping to remain the power supply or restart the grid after or during  a power outage. We will introduce four main section of the system : 
-
-1. Physical Battery based energy storage system simulation: we will introduce how we implement three 40KWh mid size battery based energy storage station integrated with other system in the physical world simulator of the power grid cyber range.
-2. Electrical device connection and energy flow : We will show the electrical devices we simulated in the energy storage system, the battery/energy station data we collected and the power flow control between the BESS and the power grid. 
-3. OT Controller design: Show how I use Metering unit and PLC to mimic the OT controller layer of energy storage station's battery control and monitoring system to simulate the individual energy storage station's auto management logic. 
-4. Centralize control of the power grid HMI : Show how we design the the power grid operation center's human machine interface to link to the SCADA network to monitor and management all the energy storage stations
-
-Important: The Battery energy storage system in cyber range  will distill (**NOT** 1:1 emulate) a few OT processes from the real world and use digital constructs to represent them for the cyber exercise and education usage. In the real world the Battery energy storage systems (BESS) is much more complex. 
+**Project Design Purpose** : This article introduces the design of a Battery Based Energy Storage System (BESS) within the OT Power Grid Simulation Cyber-Physical Environment that I developed. The goal is to use the software simulated realistic manageable BESS to demonstrate how large-scale energy storage supports the operation of a modern power grids.
 
 ![](5_Energy_Storage_System_Design_Img/logo_small.png)
+
+In practice, BESS plays a vital role in balancing supply and demand by storing excess electricity from renewable energy sources such as solar and wind, and releasing it back to the grid when needed. Beyond energy balancing, BESS also provides essential services such as maintaining power supply continuity and supporting grid restart during or after outages. To make these functions tangible for cyber exercises and educational use, the project is structured into four main sections:
+
+- **Physical BESS Simulation** – Implementation of three mid-size, 40 kWh battery energy storage stations integrated into the physical-world simulator of the power grid cyber range.
+- **Electrical Devices and Energy Flow** – Modeling the electrical devices (such as battery pack, DC-DC-unit...), data collection from the battery stations, and representation of power flow control between BESS and the power grid.
+- **OT Controller Design** – Using metering units and PLCs to mimic the controller layer for monitoring, battery control, and automatic management logic at each storage station.
+- **Centralized Grid Control (HMI/SCADA)** – Designing a power grid operations center interface to connect to the SCADA network for monitoring and managing all energy storage stations.
+
+This design framework highlights how battery-based storage can be realistically represented within a cyber range, making it possible to study and train on grid operations, control, and cybersecurity in a controlled simulation environment.
+
+**Important** : The Battery energy storage system in cyber range  will distill (**NOT** 1:1 emulate) a few OT processes from the real world and use digital constructs to represent them for the cyber exercise and education usage. In the real world the Battery energy storage systems (BESS) is much more complex. 
 
 ```python
 # Author:      Yuancheng Liu
