@@ -31,7 +31,9 @@ Table of Contents
 
 ### Introduction
 
+This BESS is a new subsystem of the [Power Grid Simulation OT Cyber Range](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc) (`Version2.0`), it is embedded within the power generation stage of the grid for enhancing grid reliability, capacity and resilience through energy storage and delivery. We developed three mid-size 40 kWh BESS station in the system to linked with different power generation source or power collection node  (solar plant, oil plant and the substation) to support the reliability 185KWh(Max) power generation source.
 
+As a simulation system, we only simulate part of the basic components and the related reading/information in the real BESS as shown below (Picture from [Volvo Penta main page](https://www.volvopenta.com/industrial/battery-energy-storage/?utm_source=google&utm_medium=cpc&utm_campaign=SI_search-BESS_phrase&utm_content=&gad_source=1&gad_campaignid=21901328062&gbraid=0AAAAAozWkbnoHn2eJuiAvLdXR6sbNBpPl&gclid=CjwKCAjwisnGBhAXEiwA0zEORzkOMW7mcfFOm7rkM_-W0W2QGQlL_xZUvZFt8RrahJO9xDbDRgVnWhoCnwwQAvD_BwE) ). 
 
 
 
