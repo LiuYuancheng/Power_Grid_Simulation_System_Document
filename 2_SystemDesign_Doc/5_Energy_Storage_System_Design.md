@@ -114,21 +114,51 @@ On the SCADA-HMI side, the system provides a comprehensive visualization and con
 
 ### Physical World Simulation Design
 
-On the physical world simulation program, we located 3 battery unit in the power grid's energy generation scope. They will connect to 3 different transformers (OEM scope) to form the BESS and represent 3 different type energy storage for the renewable source, traditional power plant and the power station. The physical GUI implement in the Power Grid Physical Simulator Module is shown below:
+In the Physical World Simulation Program, three Battery Units are deployed within the power grid’s energy generation scope. Each battery unit is connected to a corresponding OEM Transformer Scope, together forming the Battery Energy Storage System (BESS). These three BESS units respectively represent the three energy storage mechanisms introduced in the Background: Energy Storage Systems (ESS) in the Power Grid section:
+
+- Renewable energy sources.
+- Conventional thermal power plants.
+- Power station backup systems.
+
+The physical simulation and user interface implementation are integrated within the **Power Grid Physical Simulator Module**, as shown below:
 
 ![](5_Energy_Storage_System_Design_Img/s_06.png) 
 
-Each energy battery scop will provide the below information and auto controlled by the OEM scope's state: 
+#### Battery Unit Simulation Parameters
 
-- DC interface state : Power link between battery scope to OEM scope (connected/disconnected)
-- Battery charge/discharge state: battery charge, discharge or idle (fully charged), the charge/discharge. 
-- Energy data: Current energy stored (KWH), battery charged presentation. 
-- Time info: estimated time for battery to be fully charged or used up based on current battery state. 
-- Temperature info: (under development will be implement in version 2.1 )
+Each battery scope dynamically provides simulated parameters and operational states that are automatically governed by the corresponding OEM scope logic. The displayed and simulated data include:
 
-The DC interface state, voltage(V), current(A) and battery capacity information will update in real time next to the the battery scope.
+- **DC Interface State:** Indicates the connection status between the battery and OEM scope (Connected / Disconnected).
+- **Operation Data** : The BESS operation voltage, current and the battery voltage.
 
-The power grid will generate all the 4 types of state data based on current BESS and Grid Operation condition and add a random offset value to simulate the real MU reading's fluctuation. For example when the battery provide power to the grid for a while and its battery energy capacity dropped to low (10%) the output discharge voltage will drop to the range between 45V-DC to 47 V-DC. 
+- **Battery Charge/Discharge State:** Displays the operational mode — *Charging*, *Discharging*, or *Idle (fully charged)*.
+
+- **Energy Data:** Shows the current stored energy (kWh) and the corresponding charge percentage.
+
+- **Time Information:** Provides the estimated time for full charge or full discharge based on the current power flow.
+
+- **Temperature Information:** *(Under development – to be implemented in Version 2.1)*
+
+In real time, the DC interface state, voltage (V), current (A), and capacity information are updated and displayed next to each battery scope on the GUI.
+
+To simulate real-world conditions, the power grid module introduces data fluctuations by adding randomized offsets to the calculated values. For example, when a battery’s energy capacity falls below 10% after extended discharge, the simulated output voltage will fluctuate within 45V–47V DC, reflecting realistic Measurement Unit (MU) reading variations.
+
+#### BESS Auto-Management Mechanisms
+
+Two layers of automatic management are implemented within the system to ensure both local autonomy and global coordination across the energy storage subsystems.
+
+**Individual Auto-Control**
+
+Each BESS operates autonomously under local PLC control. It automatically adjusts its charge/discharge behavior according to the connected OEM scope’s operational state and overall grid conditions.
+For instance:
+
+- During **high solar output** (e.g., 30 kW generation with 21 kW demand), the BESS switches to **Charging Mode** to store surplus energy.
+
+- During **low generation periods** (e.g., cloudy or rainy conditions with only 10 kW solar output), the BESS automatically enters **Discharge Mode** to supplement grid power.
+
+**(b) Whole-System Auto-Management**
+
+While individual BESS units perform local optimization, the HMI performs **system-level balancing**. Real-time data from all three BESS units are transmitted to the HMI, which allows operators to manually adjust control logic to maintain system stability, prevent **over-charging** or **over-discharging**, and balance the load among all BESS units.
 
 #### BESS Auto Management 
 
@@ -138,69 +168,194 @@ Individual Auto-Control:  The BESS will automatically adjust its' state and outp
 
 Whole System auto-management: Each BESS's self auto control is implemented by the PLC directly. To make the 3 BESS can work together the data of the 3 BESS will send back to HMI side and HMI will use the 3 BESS data to do manual control adjustment to balance 3 BESS 's work load to avoid the battery over charged or discharged.
 
-#### BESS state and manual control
+#### BESS State Visualization and Manual Control
 
-Based on the management logic, on the physical world simulation UI, the BESS will show 4 type of state marked as different color as shown below: 
+On the **Physical Simulation UI**, each BESS is visually represented with one of four distinct color-coded states to facilitate rapid status recognition and manual operation.
 
-**BESS Charge State (Orange color)** 
+**BESS Charge State **
 
-|                                                  |                                                             |
-| ------------------------------------------------ | ----------------------------------------------------------- |
-| ![](5_Energy_Storage_System_Design_Img/s_07.png) | **DC Interrace**: Connected <br>**Battery state**: Charging |
+| Display UI State                                 | Parameters Value                                             |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| ![](5_Energy_Storage_System_Design_Img/s_07.png) | **DC Interface:** Connected<br>**Indicator Color**: Orange<br>**Battery State:** Charging<br>**Battery Capacity:** < 95%<br>**Voltage Range:** 48 V ~ 49 V DC<br>**Current Flow:** From OEM scope to Battery Scope<br>**Current Range:** 10 ~ 20 A<br>**Energy Flow:** Transformer Input > Transformer Output |
 
-UI display is shown below:
+**BESS Idle State – White**
 
-![](5_Energy_Storage_System_Design_Img/s_07.png)
+| Display UI State                                 | Parameters Value                                             |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| ![](5_Energy_Storage_System_Design_Img/s_08.png) | **DC Interface:** Connected<br>**Indicator Color**: White<br>**Battery State:** Fully charged or depleted (no OEM input)<br>**Battery Capacity:** ≥ 95% or ≤ 10%<br>**Voltage Range:** 47 V – 48 V<br>**Current Flow:** None (0 A)<br>**Current Range:** 0 A<br>**Energy Flow:** Transformer Input = Output |
 
-- DC Interrace: Connected
-- Battery state: Charging 
-- Battery capacity: < 95 %
-- Voltage range: 48 V ~ 49V DC 
-- Current flow : OEM scope to Battery Scope, 
-- Current range : 10 ~ 20 A
-- OEM energy flow: Transformer energy input > Transformer energy output
+**BESS Discharge State **
 
-**BESS Idle State (While Color)**
+| Display UI State                                 | Parameters Value                                             |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| ![](5_Energy_Storage_System_Design_Img/s_09.png) | **DC Interface:** Connected<br>**Indicator Color**: Green<br>**Battery State:** Discharging<br>**Battery Capacity:** 10% – 95%<br>**Voltage Range:** 47 V – 48 V<br>**Current Flow:** From Battery Scope to OEM Scope<br>**Current Range:** 0 A<br>**Energy Flow:** Transformer Output exceeds Input |
 
-UI display is shown below:
+**BESS Power Link Cut-Off State**
 
-![](5_Energy_Storage_System_Design_Img/s_08.png)
+| Display UI State                                 | Parameters Value                                             |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| ![](5_Energy_Storage_System_Design_Img/s_10.png) | **DC Interface:** Disconnected<br/>**Indicator Color**: Red <br/>**Battery State:** Idle<br/>**Battery Capacity:** Any<br/>**Voltage Range:** 47 V – 48 V<br/>**Current Flow:** None (0 A)<br/>**Current Range:** 0 A<br/>**Energy Flow:** Undefined |
 
-- DC Interrace: Connected
-- Battery state: fully charged or used up (if no OEM scope power input)
-- Battery capacity: >= 95 % or <= 10%
-- Voltage range: 48 V (fully charged), 47V(battery low)
-- Current flow : None
-- Current range : 0 A 
-- OEM energy flow:  Transformer energy input == Transformer energy output
+**Manual Overload Control**
 
-**BESS Discharge State (Green Color)**
+To support manual testing and failure simulation, the interface provides a **control checkbox** that allows operators to **manually disconnect** the DC interface between a battery scope and its OEM scope as shown below : 
 
-UI display is shown below:
+![](5_Energy_Storage_System_Design_Img/s_11.png)
 
-![](5_Energy_Storage_System_Design_Img/s_09.png)
+This feature enables testing of overload scenarios, grid isolation behavior, and BESS response verification under manual override conditions.
 
-- DC Interrace: Connected
-- Battery state: Discharging 
-- Battery capacity:  >= 10% and <= 95 % 
-- Voltage range: 47 ~ 48 V 
-- Current flow : Battery Scope to OEM scope to 
-- Current range : 0 A 
-- OEM energy flow:  Transformer energy input == Transformer energy output
 
-**BESS Power Link Cut Off State (Red Color)**
 
-UI display is shown below:
+------
 
-![](5_Energy_Storage_System_Design_Img/s_10.png)
+### BESS Monitor & Control — IEC-104 PLC Design
 
-- DC Interrace: Disconnected 
-- Battery state: Idle 
-- Battery capacity:  Any
-- Voltage range:  48 ~ 48.5V 
-- Current flow : None
-- Current range : 0 A 
-- OEM energy flow:  Any
+This section describes the OT-level design for monitoring and controlling the three simulated BESS units. The implementation uses the project [Python Virtual PLC Simulator with IEC-60870-5-104 Communication Protocol]( https://www.linkedin.com/pulse/python-virtual-plc-simulator-iec-60870-5-104-protocol-yuancheng-liu-bov7c) to build the PLC simulation program. 
+
+For simplicity the current release runs **one IEC104 PLC instance** with **three memory banks** (one bank per BESS). The PLC fetches sensor/field values from the Physical World Simulator, executes local automatic control logic (ladder logic), updates physical components in the simulator, and reports measurements/controls back to the SCADA/HMI via IEC104. The system workflow diagram is shown below : 
+
+![](5_Energy_Storage_System_Design_Img/s_12.png)
+
+The system will loop execute the steps in below workflow sequence: 
+
+- **Step1** : Physical Simulator publishes battery measurements (voltage, current, SOC, DC link state, temperature).
+- **Step2** : PLC reads these values from the Physical Simulator and set the related IEC-104 IOA memory.
+- **Step3** : PLC ladder logic (auto/manual, interlocks, timers, hysteresis) decides on commands (charge enable, discharge enable, DC breaker open/close, alarms).
+- **Step4** : PLC writes control outputs back to the IOA memory and feed back to the Physical Simulator.
+- **Step5** :   PLC packages the measurement/control points as IEC104 objects (M_SP_NA_1, M_ME_NC_1, C_RC_TA_1, etc.) and exchanges them with SCADA/HMI.
+
+#### IEC104 Memory Mapping
+
+**Notes:**
+
+- MP = measurement point; CP = command/changeable point.
+- Use `M_SP_NA_1` for discrete states (booleans), `M_ME_NC_1` for measured analog numeric.
+- CP type `C_RC_TA_1` is used for simple command steps: Auto Mode: `c104.Step.INVALID_0` , Manual  Power OFF :  `c104.Step.LOWER` , Manual  Power ON : `c104.Step.HIGHER`, Changeable Point Type: `CP`
+
+**Solar Plant BESS IEC104 Memory Configure**
+
+| Memory Point IOA | Point Type | Memory Point Type     | Init Val              | Physical Component          |
+| ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
+| 01               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_0_DC_interface_state   |
+| 02               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery_state        |
+| 03               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation Voltage    |
+| 04               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation Current    |
+| 05               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery Percentage   |
+| 06               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery Temperature  |
+| --               | --         | --                    | --                    | --                          |
+| 11               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_Breaker |
+
+**Oil Plat BESS IEC104 Memory Configure**
+
+| Memory Point IOA | Point Type | Memory Point Type     | Init Val              | Physical Component          |
+| ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
+| 21               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_1_DC_interface_state   |
+| 22               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery_state        |
+| 23               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation Voltage    |
+| 24               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation Current    |
+| 25               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery Percentage   |
+| 26               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery Temperature  |
+| --               | --         | --                    | --                    | --                          |
+| 31               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_Breaker |
+
+**Station BESS IEC104 Memory Configure**
+
+| Memory Point IOA | Point Type | Memory Point Type     | Init Val              | Physical Component          |
+| ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
+| 41               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_2_DC_interface_state   |
+| 42               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery_state        |
+| 43               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation Voltage    |
+| 44               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation Current    |
+| 45               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery Percentage   |
+| 46               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery Temperature  |
+| --               | --         | --                    | --                    | --                          |
+| 51               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_2_DC_interface_Breaker |
+
+#### Ladder Logic Example
+
+Below are representative ladder rungs for each BESS_1 (Solar Plant BESS) , in the IEC-014 plc simulation, all the ladder logic is simulated via python code.
+
+**Rung 1 — Auto / Manual selection**
+
+If manual command active, set `Auto_Mode = FALSE`. Otherwise `Auto_Mode = TRUE`.
+
+```scss
+[ HMI_Manual_Mode ] ----( )---- Auto_Mode := FALSE
+[ NOT HMI_Manual_Mode ] ---( )---- Auto_Mode := TRUE
+```
+
+**Rung 2 — Safety interlock: force breaker OPEN on fault**
+
+Condition: overtemp OR overcurrent OR voltage out-of-range → breaker open, disable charge/discharge, set Alarm.
+
+```scss
+[( T > T_MAX ) OR ( I > I_MAX ) OR ( V < V_MIN ) OR ( V > V_MAX )]--------------------------( )---- Force_Breaker_Open
+```
+
+**Rung 3 — Auto charge enable (when Auto_Mode)**
+
+Charge if Auto_Mode AND Grid_Surplus AND SOC < CHARGE_ENABLE_TH (e.g., 95%) AND NOT Force_Breaker_Open
+
+```scss
+[ Auto_Mode ] + [ Grid_Surplus ] + [ SOC < 95 ] + [ NOT Force_Breaker_Open ]-------------------( )---- Charge_Enable
+```
+
+**Rung 4 — Auto discharge enable (when Auto_Mode)**
+
+Discharge if Auto_Mode AND Grid_Deficit AND SOC > DISCHARGE_ENABLE_TH (e.g., 10%) AND NOT Force_Breaker_Open
+
+```scss
+[ Auto_Mode ] + [ Grid_Deficit ] + [ SOC > 10 ] + [ NOT Force_Breaker_Open ]-------------------( )---- Discharge_Enable
+```
+
+**Rung 5 — Breaker command logic with manual override**
+
+Manual commands from HMI (Close/ Open) take precedence; otherwise close breaker if either charge or discharge enabled and no force open.
+
+```scss
+[ Manual_Close ] ----------------( )---- Breaker_CMD := CLOSE
+[ Manual_Open ] -----------------( )---- Breaker_CMD := OPEN
+[ NOT Manual_Close ] + [ NOT Manual_Open ] + (Charge_Enable OR Discharge_Enable) + [ NOT Force_Breaker_Open ]---------------------( )---- Breaker_CMD := CLOSE ELSE Breaker_CMD := OPEN
+```
+
+**Rung 6 — Alarms latching [under developing]**
+
+If any safety condition true, set alarm latch until acknowledged by operator.
+
+```scss
+[( T > T_MAX ) OR ( I > I_MAX ) OR ( V < V_MIN ) OR ( V > V_MAX )] --------------------------------( )---- Alarm_Latch
+[ HMI_Ack ] --------------------------------(R)---- Alarm_Latch RESET
+```
+
+Mapping to other BESS-X the control logic are same:
+
+- `DC_OK` = `BESS_x_DC_interface_state` (bool)
+- `SOC` = `BESS_x_Battery_Percentage` (%)
+- `V` = `BESS_x_Operation_Voltage` (V)
+- `I` = `BESS_x_Operation_Current` (A)
+- `T` = `BESS_x_Battery_Temperature` (°C)
+- `Grid_Surplus` = computed flag (generation > load + margin) — derived in PLC from grid measurements.
+- `Grid_Deficit` = computed flag (load > generation + margin)
+- `Auto_Mode` = PLC auto/manual link and battery state switcher (true=auto)
+- `Manual_Open` / `Manual_Close` = HMI command CP to breaker (enum/latch)
+- `Breaker_CMD` = coil that controls `BESS_x_DC_interface_Breaker` CP
+
+Safety Alarm Triggered condition:
+
+- If `Temperature > T_max` → force DC breaker OPEN, disable charge/discharge, raise alarm.
+- If `Voltage < V_min` or `Voltage > V_max` or `Current > I_max` → open breaker and alarm.
+
+
+
+------
+
+### BESS SCADA HMI Design 
+
+
+
+
+
+
 
 
 
