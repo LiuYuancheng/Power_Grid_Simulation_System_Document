@@ -89,7 +89,7 @@ The architecture of the BESS within the Power Grid OT Cyber Range spans three la
 
 ![](5_Energy_Storage_System_Design_Img/s_05.png)
 
-**Level 0 Physical Process Field I/O  Device Layer**
+##### Level 0 Physical Process Field I/O  Device Layer
 
 At the **physical-world equipment simulation level**, the system models several key BESS components, including:
 
@@ -100,11 +100,11 @@ At the **physical-world equipment simulation level**, the system models several 
 
 In the simulated configuration, each BESS is positioned adjacent to the energy collection transformer of its associated power source. The BESS shares the same DC-AC/DC-DC step-up transformer as the generators. Functionally, the BESS acts as a direct power consumer when charging and as a power generator when discharging. The modeled DC interface between the battery system and the transformer (within the OEM scope) operates at 48 V DC.
 
-**Level 1 OT System Controller LAN** 
+##### Level 1 OT System Controller LAN 
 
 At the OT controller level, the system employs a PLC simulation program that emulates an [**ABB AC500 PLC**](https://new.abb.com/plc/plc-technology/ac500-plc-technical-features/ac500-connectivity/iec-60870), communicating via the IEC 60870-5-104 protocol. This setup allows the simulated controller to function as a flexible Remote Terminal Unit (RTU) within different layers of the automation architecture. The PLC autonomously manages the BESS’s charge/discharge operations based on linked transformer output, collects relevant operational data, and transmits it back to the power grid control HMI through the simulated RTU communication channel.
 
-**Level 2 Power Grid Control Center Processing LAN**
+##### Level 2 Power Grid Control Center Processing LAN
 
 On the SCADA-HMI side, the system provides a comprehensive visualization and control interface to display the real-time BESS information, enables manual overload and control commands with deferent gauge, indicator control buttons. It also integrates automated safety and protection mechanisms to ensure realistic grid management behavior within the cyber range environment.
 
@@ -271,7 +271,7 @@ The system will loop execute the steps in below workflow sequence:
 | --               | --         | --                    | --                    | --                          |
 | 51               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_2_DC_interface_Breaker |
 
-#### Ladder Logic Example
+#### Ladder Logic Implement Example
 
 Below are representative ladder rungs for each BESS_1 (Solar Plant BESS) , in the IEC-014 plc simulation, all the ladder logic is simulated via python code.
 
@@ -340,7 +340,7 @@ Mapping to other BESS-X the control logic are same:
 - `Manual_Open` / `Manual_Close` = HMI command CP to breaker (enum/latch)
 - `Breaker_CMD` = coil that controls `BESS_x_DC_interface_Breaker` CP
 
-Safety Alarm Triggered condition:
+Safety alarm triggered condition:
 
 - If `Temperature > T_max` → force DC breaker OPEN, disable charge/discharge, raise alarm.
 - If `Voltage < V_min` or `Voltage > V_max` or `Current > I_max` → open breaker and alarm.
@@ -349,23 +349,56 @@ Safety Alarm Triggered condition:
 
 ------
 
-### BESS SCADA HMI Design 
+### Battery Energy Storage System (BESS) SCADA HMI Design
 
+The Battery Energy Storage System (BESS) Human-Machine Interface (HMI) serves as a critical component of the Power Grid SCADA System, enabling operators to **monitor, control, and manage** distributed energy storage units in real time.
 
+The BESS HMI establishes an **IEC 60870-5-104 (IEC104) client connection** to the dedicated PLC controller. Through this communication channel, the system continuously retrieves live BESS operational data (voltage, current, capacity, and status) and allows secure remote control commands to be sent back to the PLC.
 
+The monitoring and control interface of the BESS is shown below:
 
+![](5_Energy_Storage_System_Design_Img/s_13.png)
 
+The design integrates **five dedicated panels** that provide operators with both visualization and interactive control capabilities:
 
+#### IEC 60617 Circuit Diagram Display Panel
 
+- **Panel Type:** Raw BESS Data Monitor
+- **Function** : Displays the circuit schematic view of the power grid based on **IEC 60617** graphical symbols. The panel visualizes BESS icons and real-time parameters (state of charge, voltage, current, and battery percentage) acquired from the IEC104 PLC. 
 
+#### IEC 104 PLC [Storage Control] Panel
 
+- **Panel Type:** PLC and Communication Status Monitor
+- **Function**: Monitors the communication health between the SCADA system and the **IEC60870-104 PLC**. Displays PLC connection information including IP address, communication port, PLC ID, station index, and connection state.
 
+#### Power Storage Link Control Panel
+
+- **Panel Type:** BESS DC Interface Monitor and Controller
+- **Function**: Provides manual and automatic control over the DC power link interface between each BESS and the main grid bus. Button `Power-Link[Connect]` : Manual control to turn on the DC-interface power link, Button `Power-Link[Cut-OFF]`: Manual control to cut of the on the DC-interface power link, Button  `Power-Link[PW-Manual]` : switch between the auto/manual control mode.
+
+#### IED-MU Detail Data Panel [Energy Capacity]
+
+- **Panel Type:** Processed BESS Data Monitor
+- **Function**: Presents calculation of the remaining battery energy capacity from each storage unit. Operators can observe the real-time charge percentage of each BESS, enabling efficient energy management and performance tracking.
+
+#### Alert Code Display Panel
+
+- **Panel Type:** Fault and Warning Monitor
+- **Function**: Displays active **error and warning codes** received from each BESS module, allowing the operator to quickly identify abnormal states and trigger appropriate maintenance or safety actions.
+
+Through IEC 60870-104 communication and structured SCADA panels, operators gain full situational awareness of system performance, communication status, and power link control, ensuring both **grid reliability** and **operational safety**.
 
 ------
 
-### Reference
+### Reference Doc Link
 
 - https://en.wikipedia.org/wiki/Grid_energy_storage
 - https://new.abb.com/plc/plc-technology/ac500-plc-technical-features/ac500-connectivity/iec-60870
 - https://www.gminsights.com/industry-analysis/energy-storage-systems-market?gad_source=1&gad_campaignid=21841937168&gbraid=0AAAAACuPGhW9A41yu679JCuOFyIOTxLRx&gclid=CjwKCAjwisnGBhAXEiwA0zEOR8s86vp5s4b601uN1anye_K9fQlpZlEQtxNF8SO68G8cOFxTQ5PdthoC8eQQAvD_BwE
 - https://www.volvopenta.com/industrial/battery-energy-storage/?utm_source=google&utm_medium=cpc&utm_campaign=SI_search-BESS_phrase&utm_content=&gad_source=1&gad_campaignid=21901328062&gbraid=0AAAAAozWkbnoHn2eJuiAvLdXR6sbNBpPl&gclid=CjwKCAjwisnGBhAXEiwA0zEORzkOMW7mcfFOm7rkM_-W0W2QGQlL_xZUvZFt8RrahJO9xDbDRgVnWhoCnwwQAvD_BwE
+
+
+
+------
+
+> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 09/10/2025 if you have any question, please send me a message. 
