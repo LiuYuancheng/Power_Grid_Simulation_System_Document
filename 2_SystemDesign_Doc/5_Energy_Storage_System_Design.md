@@ -31,34 +31,38 @@ Table of Contents
 
 ### Introduction
 
-The **Battery Energy Storage System (BESS)** introduced in this work is a newly developed subsystem of the [**Power Grid Simulation OT Cyber Range**](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc) (**Version 2.0**). It is designed as part of the **power generation stage** of the simulated grid, enhancing overall reliability, capacity, and resilience through dynamic energy storage and delivery mechanisms. Within this system, three mid-size 40 kWh BESS stations have been developed and integrated with different power collection nodes — including the main out transformer of a solar power plant, an oil-based power plant, and a substation — collectively supporting up to 185 kWh (maximum) of simulated power generation capacity.
+The **Battery Energy Storage System (BESS)** introduced in this work is a newly developed subsystem of the [**Power Grid Simulation OT Cyber Range**](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc) (**Version 2.0**). It is designed as part of the **power generation stage** of the simulated grid, enhancing overall reliability, capacity, and resilience through dynamic energy storage and delivery mechanisms. 
+
+Within this system, three mid-size 40 kWh BESS stations have been developed and integrated with different power collection nodes — including the main output transformers of a solar power plant, an oil-based power plant, and a substation — collectively supporting up to 185 kWh (maximum) of simulated power generation capacity.
 
 As a simulation platform, the goal is **not** to replicate a full-scale industrial BESS in all its complexity, but rather to model selected core components and basic operational behaviors that generate realistic data and interactions representative of a real system. The simulated subsystems are inspired by the concept and idea of industrial solutions from [**Volvo Penta**](https://www.volvopenta.com/industrial/battery-energy-storage/?utm_source=google&utm_medium=cpc&utm_campaign=SI_search-BESS_phrase&utm_content=&gad_source=1&gad_campaignid=21901328062&gbraid=0AAAAAozWkbnoHn2eJuiAvLdXR6sbNBpPl&gclid=CjwKCAjwisnGBhAXEiwA0zEORzkOMW7mcfFOm7rkM_-W0W2QGQlL_xZUvZFt8RrahJO9xDbDRgVnWhoCnwwQAvD_BwE), and focus on the essential part of structural and functional layers of a BESS (as illustrated below).
 
 ![](5_Energy_Storage_System_Design_Img/s_03.png)
 
-The key feature simulated in the BESS simulation covers the components from Level 0 OT Env Layer (Physical Process Field I/O  Device) to the Level 2 OT Env Layer (Power Grid OCC SCADA-HMI). A simulated function mapping table is shown below:
+The simulated BESS system spans multiple layers of the Operational Technology (OT) environment, from Level 0 physical process devices to Level 2 grid SCADA control systems. The following table summarizes the major subsystems and their simulated functions show in the figure-01 : 
 
-| BESS Subsystem                | Simulated Function/data                                      | OT Env Level              |
-| ----------------------------- | ------------------------------------------------------------ | ------------------------- |
-| [1] Cube battery pack         | Batteries set pack capacity value [kWh, Percentage]          | level-0                   |
-| [2] Battery management system | Simulate the auto battery charge/discharge control sequence with PLC | level-0, level-1          |
-| [4] Monitoring System         | Simulate the MU-PLC data collection and the HMI data visualization | level-0, level-1, level-2 |
-| [5] Electrical safety         | Simulate the charge/discharge, volage, current safety control in PLC level and the alarm visualization in HMI level | level-1, level-2          |
-| [7] DC interface              | Battery link with the power collection node to provide 48V DC power transmission interface | level-0                   |
-| [9] OEM Scope                 | Simulate the basic DC-AC converter to integrate in the power plants AC-AC step up transformer | level-0                   |
+| BESS Subsystem                | Simulated Function/data                                      | OT Env Level |
+| ----------------------------- | ------------------------------------------------------------ | ------------ |
+| [1] Cube battery pack         | Defines battery pack capacity values (kWh, %)                | Level 0      |
+| [2] Battery management system | Simulates automated charge/discharge control sequences managed via PLC | Level 0–1    |
+| [4] Monitoring System         | Simulate the charge/discharge, volage, current safety control in PLC level and the alarm visualization in HMI level | Level 0–2    |
+| [5] Electrical safety         | Simulates charge/discharge voltage–current protection logic and alarm visualization | Level 1–2    |
+| [7] DC interface              | Represents 48 V DC power transmission between the battery system and collection node | level 0      |
+| [9] OEM Scope                 | Simulates a basic DC–AC converter integrated into the plant’s AC–AC step-up transformer | level 0      |
 
-Use in cyber exercise
+#### Application in Cyber Exercises
 
-This BESS integration not only strengthens the realism of the Power Grid OT Cyber Range but also serves as an cyber exercise educational and research platform for exploring energy storage control, grid automation, and OT cybersecurity in hybrid energy systems. As the system is designed for cyber exercise, so the main usage for the simulated BESS is providing a target system or provide different attack vectors in the grid for the red team to attack and blue team to defense. It can also use for an important blue team exercise which is real time incidence response, when the attacker launches the attack to cause the power outage, the BESS system will support power to keep the system working for a time interval and the blue team need to find way to recover the system before the BESS's battery used up.  
+As we introduced in the Project Design Purpose section, the integration of BESS significantly enhances the **realism and training value** of the Power Grid OT Cyber Range, all the design serves for the application in educational, cyber event, training and research. 
+
+In cyber exercises, the simulated BESS plays dual roles — both as a red team target system and as a blue team resilience mechanism during cyber incidents. For instance, during a red-team attack scenario that triggers a simulated power outage, the BESS subsystem can automatically supply backup power for a limited duration. This feature allows the blue team to perform real-time incident response , they need to follow the pre-set emergency handling plan to prevent the attack and restore system stability before the stored energy is depleted. Such dynamic interactions help participants understand the operational importance of BESS within modern grid defense and recovery strategies.
 
 
 
 ------
 
-### Background knowledge about Energy Storage System (ESS) in the Power Grid
+### Background: Energy Storage Systems (ESS) in the Power Grid
 
-Before we start introduce the technical detail of BESS, we will also show some  background knowledge of Energy Storage System n the Power Grid. The below image from wiki (https://en.wikipedia.org/wiki/Grid_energy_storage)  summrize clearly about the function and the energy flow of the ESS.
+Before delving into the technical design of the simulated BESS, it is important to understand the broader concept of **Energy Storage Systems (ESS)** within real-world power grids. The diagram below from [Wikipedia](https://en.wikipedia.org/wiki/Grid_energy_storage) illustrates the fundamental energy flow and key functional roles of ESS.
 
 ![](5_Energy_Storage_System_Design_Img/s_04.png)
 
@@ -77,13 +81,11 @@ As the global energy landscape shifts toward **decarbonization and smart grids**
 
 
 
-
-
 ------
 
 ### BESS Architecture Overview
 
-The components of the BESS in the Power Grid Cyber Range's three levels of OT environment architecture is high lighted in the  below diagram :
+The architecture of the BESS within the Power Grid OT Cyber Range spans three layers of the OT environment, as illustrated below in the system architecture diagram:
 
 ![](5_Energy_Storage_System_Design_Img/s_05.png)
 
@@ -110,29 +112,95 @@ On the SCADA-HMI side, the system provides a comprehensive visualization and con
 
 ------
 
+### Physical World Simulation Design
 
+On the physical world simulation program, we located 3 battery unit in the power grid's energy generation scope. They will connect to 3 different transformers (OEM scope) to form the BESS and represent 3 different type energy storage for the renewable source, traditional power plant and the power station. The physical GUI implement in the Power Grid Physical Simulator Module is shown below:
 
+![](5_Energy_Storage_System_Design_Img/s_06.png) 
 
+Each energy battery scop will provide the below information and auto controlled by the OEM scope's state: 
 
+- DC interface state : Power link between battery scope to OEM scope (connected/disconnected)
+- Battery charge/discharge state: battery charge, discharge or idle (fully charged), the charge/discharge. 
+- Energy data: Current energy stored (KWH), battery charged presentation. 
+- Time info: estimated time for battery to be fully charged or used up based on current battery state. 
+- Temperature info: (under development will be implement in version 2.1 )
 
+The DC interface state, voltage(V), current(A) and battery capacity information will update in real time next to the the battery scope.
 
+The power grid will generate all the 4 types of state data based on current BESS and Grid Operation condition and add a random offset value to simulate the real MU reading's fluctuation. For example when the battery provide power to the grid for a while and its battery energy capacity dropped to low (10%) the output discharge voltage will drop to the range between 45V-DC to 47 V-DC. 
 
+#### BESS Auto Management 
 
+The are 2 BESS Auto management mechanism in the system 
 
+Individual Auto-Control:  The BESS will automatically adjust its' state and output based on the OEM scope and the grid state. For example if the in sunny weather the solar provide 30KW power and the load only requests 21kW power, the BESS will auto switch to the charging mode to storge energy and when the weather change to raining and if the solar panel can only provide 10kW power, the BESS will auto switch to discharge mode to release power to the grid. 
 
+Whole System auto-management: Each BESS's self auto control is implemented by the PLC directly. To make the 3 BESS can work together the data of the 3 BESS will send back to HMI side and HMI will use the 3 BESS data to do manual control adjustment to balance 3 BESS 's work load to avoid the battery over charged or discharged.
 
+#### BESS state and manual control
 
+Based on the management logic, on the physical world simulation UI, the BESS will show 4 type of state marked as different color as shown below: 
 
+**BESS Charge State (Orange color)** 
 
-------
+|                                                  |                                                             |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| ![](5_Energy_Storage_System_Design_Img/s_07.png) | **DC Interrace**: Connected <br>**Battery state**: Charging |
 
+UI display is shown below:
 
+![](5_Energy_Storage_System_Design_Img/s_07.png)
 
+- DC Interrace: Connected
+- Battery state: Charging 
+- Battery capacity: < 95 %
+- Voltage range: 48 V ~ 49V DC 
+- Current flow : OEM scope to Battery Scope, 
+- Current range : 10 ~ 20 A
+- OEM energy flow: Transformer energy input > Transformer energy output
 
+**BESS Idle State (While Color)**
 
+UI display is shown below:
 
+![](5_Energy_Storage_System_Design_Img/s_08.png)
 
+- DC Interrace: Connected
+- Battery state: fully charged or used up (if no OEM scope power input)
+- Battery capacity: >= 95 % or <= 10%
+- Voltage range: 48 V (fully charged), 47V(battery low)
+- Current flow : None
+- Current range : 0 A 
+- OEM energy flow:  Transformer energy input == Transformer energy output
 
+**BESS Discharge State (Green Color)**
+
+UI display is shown below:
+
+![](5_Energy_Storage_System_Design_Img/s_09.png)
+
+- DC Interrace: Connected
+- Battery state: Discharging 
+- Battery capacity:  >= 10% and <= 95 % 
+- Voltage range: 47 ~ 48 V 
+- Current flow : Battery Scope to OEM scope to 
+- Current range : 0 A 
+- OEM energy flow:  Transformer energy input == Transformer energy output
+
+**BESS Power Link Cut Off State (Red Color)**
+
+UI display is shown below:
+
+![](5_Energy_Storage_System_Design_Img/s_10.png)
+
+- DC Interrace: Disconnected 
+- Battery state: Idle 
+- Battery capacity:  Any
+- Voltage range:  48 ~ 48.5V 
+- Current flow : None
+- Current range : 0 A 
+- OEM energy flow:  Any
 
 
 
