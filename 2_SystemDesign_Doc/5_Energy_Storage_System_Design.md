@@ -4,16 +4,16 @@
 
 ![](5_Energy_Storage_System_Design_Img/logo_small.png)
 
-In practice, BESS plays a vital role in balancing supply and demand by storing excess electricity from renewable energy sources such as solar and wind, and releasing it back to the grid when needed. Beyond energy balancing, BESS also provides essential services such as maintaining power supply continuity and supporting grid restart during or after outages. To make these functions tangible for cyber exercises and educational use, the project is structured into four main sections:
+In practice, BESS plays a vital role in balancing supply and demand by storing excess electricity from renewable energy sources such as solar and wind, and releasing it back to the grid when needed. Beyond energy balancing, BESS also provides essential services such as maintaining power supply continuity and supporting grid restart during or after outages. To make these functions tangible for cyber exercises and educational use, the project is structured into four main sections :
 
 - **Physical BESS Simulation** – Implementation of three mid-size, 40 kWh battery energy storage stations integrated into the physical-world simulator of the power grid cyber range.
-- **Electrical Devices and Energy Flow** – Modeling the electrical devices (such as battery pack, DC-DC-unit...), data collection from the battery stations, and representation of power flow control between BESS and the power grid.
-- **OT Controller Design** – Using metering units and PLCs to mimic the controller layer for monitoring, battery control, and automatic management logic at each storage station.
-- **Centralized Grid Control (HMI/SCADA)** – Designing a power grid operations center interface to connect to the SCADA network for monitoring and managing all energy storage stations.
+- **Electrical Devices and Energy Flow** – Modeling the electrical devices (such as battery pack, DC-Interface...), data collection from the battery stations, and representation of power flow control between BESS and the power grid.
+- **OT Controller Design** – Using metering units and PLC(s) to mimic the OT controller layer for monitoring, battery control, and automatic management logic at each storage station.
+- **Centralized Grid Control (HMI/SCADA)** – Designing a power grid operations center (OCC) interface to connect to the SCADA network for monitoring and managing all energy storage stations.
 
 This design framework highlights how battery-based storage can be realistically represented within a cyber range, making it possible to study and train on grid operations, control, and cybersecurity in a controlled simulation environment.
 
-> **Important** : The Battery energy storage system in cyber range  will distill (**NOT** 1:1 emulate) a few OT processes from the real world and use digital constructs to represent them for the cyber exercise and education usage. In the real world the Battery energy storage systems (BESS) is much more complex. 
+> **Important** : The battery energy storage system (BESS) in cyber range  will distill (**NOT** 1:1 emulate) a few OT processes from the real world and use digital constructs to represent them for the cyber exercise and education usage. In the real world the Battery energy storage systems (BESS) is much more complex. 
 
 ```python
 # Author:      Yuancheng Liu
@@ -33,17 +33,19 @@ Table of Contents
 
 The **Battery Energy Storage System (BESS)** introduced in this work is a newly developed subsystem of the [**Power Grid Simulation OT Cyber Range**](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc) (**Version 2.0**). It is designed as part of the **power generation stage** of the simulated grid, enhancing overall reliability, capacity, and resilience through dynamic energy storage and delivery mechanisms. 
 
-Within this system, three mid-size 40 kWh BESS stations have been developed and integrated with different power collection nodes — including the main output transformers of a solar power plant, an oil-based power plant, and a substation — collectively supporting up to 185 kWh (maximum) of simulated power generation capacity.
+Within this system, three mid-size 40 kWh BESS stations have been developed and integrated with different power collection nodes (OEM scope) — including the main output transformers of a solar power plant, an oil-based power plant, and a power substation — collectively supporting up to 185 kWh (maximum) of simulated power generation capacity.
 
 As a simulation platform, the goal is **not** to replicate a full-scale industrial BESS in all its complexity, but rather to model selected core components and basic operational behaviors that generate realistic data and interactions representative of a real system. The simulated subsystems are inspired by the concept and idea of industrial solutions from [**Volvo Penta**](https://www.volvopenta.com/industrial/battery-energy-storage/?utm_source=google&utm_medium=cpc&utm_campaign=SI_search-BESS_phrase&utm_content=&gad_source=1&gad_campaignid=21901328062&gbraid=0AAAAAozWkbnoHn2eJuiAvLdXR6sbNBpPl&gclid=CjwKCAjwisnGBhAXEiwA0zEORzkOMW7mcfFOm7rkM_-W0W2QGQlL_xZUvZFt8RrahJO9xDbDRgVnWhoCnwwQAvD_BwE), and focus on the essential part of structural and functional layers of a BESS (as illustrated below).
 
 ![](5_Energy_Storage_System_Design_Img/s_03.png)
 
-The simulated BESS system spans multiple layers of the Operational Technology (OT) environment, from Level 0 physical process devices to Level 2 grid SCADA control systems. The following table summarizes the major subsystems and their simulated functions show in the figure-01 : 
+`Figure-01: BESS subsystem structure overview from Volvo Penta, version v0.2.0 (2025)`
 
-| BESS Subsystem                | Simulated Function/data                                      | OT Env Level |
+The simulated BESS system spans multiple layers of the Operational Technology (OT) environment, from `Level 0 physical process devices` to `Level 2 grid SCADA control systems`. The following table summarizes the major subsystems and their simulated functions show in the figure-01 : 
+
+| BESS Subsystem                | Simulated Function and Data Type                             | OT Env Level |
 | ----------------------------- | ------------------------------------------------------------ | ------------ |
-| [1] Cube battery pack         | Defines battery pack capacity values (kWh, %)                | Level 0      |
+| [1] Cube battery pack         | Defines battery pack capacity values (V, A ,kWh, %)          | Level 0      |
 | [2] Battery management system | Simulates automated charge/discharge control sequences managed via PLC | Level 0–1    |
 | [4] Monitoring System         | Simulate the charge/discharge, volage, current safety control in PLC level and the alarm visualization in HMI level | Level 0–2    |
 | [5] Electrical safety         | Simulates charge/discharge voltage–current protection logic and alarm visualization | Level 1–2    |
@@ -52,7 +54,7 @@ The simulated BESS system spans multiple layers of the Operational Technology (O
 
 #### Application in Cyber Exercises
 
-As we introduced in the Project Design Purpose section, the integration of BESS significantly enhances the **realism and training value** of the Power Grid OT Cyber Range, all the design serves for the application in educational, cyber event, training and research. 
+As we introduced in the `Project Design Purpose` section, the integration of BESS significantly enhances the **realism and training value** of the Power Grid OT Cyber Range, all the design serves for the application in educational, cyber event, training and research. 
 
 In cyber exercises, the simulated BESS plays dual roles — both as a red team target system and as a blue team resilience mechanism during cyber incidents. For instance, during a red-team attack scenario that triggers a simulated power outage, the BESS subsystem can automatically supply backup power for a limited duration. This feature allows the blue team to perform real-time incident response , they need to follow the pre-set emergency handling plan to prevent the attack and restore system stability before the stored energy is depleted. Such dynamic interactions help participants understand the operational importance of BESS within modern grid defense and recovery strategies.
 
@@ -62,13 +64,15 @@ In cyber exercises, the simulated BESS plays dual roles — both as a red team t
 
 ### Background: Energy Storage Systems (ESS) in the Power Grid
 
-Before delving into the technical design of the simulated BESS, it is important to understand the broader concept of **Energy Storage Systems (ESS)** within real-world power grids. The diagram below from [Wikipedia](https://en.wikipedia.org/wiki/Grid_energy_storage) illustrates the fundamental energy flow and key functional roles of ESS.
+Before delving into the technical design of the simulated BESS, it is important to give a short introduction about the broader concept of **Energy Storage Systems (ESS)** within real-world power grids. The diagram below from [Wikipedia](https://en.wikipedia.org/wiki/Grid_energy_storage) illustrates the fundamental energy flow and key functional roles of ESS.
 
 ![](5_Energy_Storage_System_Design_Img/s_04.png)
 
+`Figure-02: ESS subsystem structure and function overview, version v0.2.0 (2025)`
+
 An **Energy Storage System (ESS)** is a critical component in modern power grid systems, designed to store excess electrical energy and release it when needed. ESS plays a vital role in balancing supply and demand, improving grid stability, and enabling the integration of renewable energy sources such as solar and wind, which are inherently intermittent.
 
-By storing surplus energy during periods of low demand or high renewable generation, and discharging it during peak demand or supply shortages, ESS enhances the **reliability, flexibility, and resilience** of the grid. Different technologies are used in ESS, including **batteries (lithium-ion, flow batteries, lead-acid)**, **mechanical storage (pumped hydro, flywheels, compressed air)**, and **thermal storage**.
+By storing surplus energy during periods of low demand or high renewable generation, and discharging it during peak demand or supply shortages, ESS enhances the reliability, flexibility, and resilience of the grid. Different technologies are used in ESS, including batteries (lithium-ion, flow batteries, lead-acid), mechanical storage (pumped hydro, flywheels, compressed air), and thermal storage.
 
 Key functions of ESS in the power grid include:
 
@@ -77,7 +81,7 @@ Key functions of ESS in the power grid include:
 - **Renewable Integration** – Storing excess renewable energy for use during low-generation periods.
 - **Backup Power & Resilience** – Ensuring reliable supply during outages or emergencies.
 
-As the global energy landscape shifts toward **decarbonization and smart grids**, ESS has become an enabling technology for **microgrids, smart manufacturing, hybrid power systems, and future energy markets**.
+As the global energy landscape shifts toward decarbonization and smart grids, ESS has become an enabling technology for microgrids, smart manufacturing, hybrid power systems, and future energy markets.
 
 
 
@@ -85,20 +89,22 @@ As the global energy landscape shifts toward **decarbonization and smart grids**
 
 ### BESS Architecture Overview
 
-The architecture of the BESS within the Power Grid OT Cyber Range spans three layers of the OT environment, as illustrated below in the system architecture diagram:
+The architecture of the BESS within the Power Grid OT Cyber Range spans the three basic layers of the OT environment, as illustrated below in the system architecture diagram (high light in the rectangles) :
 
 ![](5_Energy_Storage_System_Design_Img/s_05.png)
 
-##### Level 0 Physical Process Field I/O  Device Layer
+`Figure-03: Power Grid OT Cyber Range Architecture, version v0.2.0 (2025)`
+
+##### Level 0 OT Physical Process Field I/O  Device Layer
 
 At the **physical-world equipment simulation level**, the system models several key BESS components, including:
 
 - Cube battery packs
 - Battery Management System (BMS)
-- Monitoring and electrical safety systems
+- Metering unit and electrical safety systems
 - OEM-level connection and control scope
 
-In the simulated configuration, each BESS is positioned adjacent to the energy collection transformer of its associated power source. The BESS shares the same DC-AC/DC-DC step-up transformer as the generators. Functionally, the BESS acts as a direct power consumer when charging and as a power generator when discharging. The modeled DC interface between the battery system and the transformer (within the OEM scope) operates at 48 V DC.
+In the simulated configuration, each BESS is positioned adjacent to the energy collection transformer of its associated power source. The BESS shares the same DC-AC/DC-DC step-up transformer as the generators. Functionally, the BESS acts as a direct power consumer when charging and as a power generator when discharging. The modeled DC interface between the battery system and the transformer (within the OEM scope) operates at 48 V DC. 
 
 ##### Level 1 OT System Controller LAN 
 
@@ -108,13 +114,15 @@ At the OT controller level, the system employs a PLC simulation program that emu
 
 On the SCADA-HMI side, the system provides a comprehensive visualization and control interface to display the real-time BESS information, enables manual overload and control commands with deferent gauge, indicator control buttons. It also integrates automated safety and protection mechanisms to ensure realistic grid management behavior within the cyber range environment.
 
+**Note** : In the reference doc,  Volvo Penta use CAN_Bus for the metering unit's data exchange, in my implement I temporary use the traditional GOOSE (Generic Object-Oriented Substation Event) metering unit IEC61850 protocol for data transfer and will change to the CAN-Bus in the future.
+
 
 
 ------
 
 ### Physical World Simulation Design
 
-In the Physical World Simulation Program, three Battery Units are deployed within the power grid’s energy generation scope. Each battery unit is connected to a corresponding OEM Transformer Scope, together forming the Battery Energy Storage System (BESS). These three BESS units respectively represent the three energy storage mechanisms introduced in the Background: Energy Storage Systems (ESS) in the Power Grid section:
+In the Physical World Simulation Program, three Battery Units are deployed within the power grid’s energy generation scope. Each battery unit is connected to a corresponding OEM Scope (Transformer), together forming the Battery Energy Storage System (BESS). These three BESS units respectively represent the three energy storage mechanisms introduced in the `Background : Energy Storage Systems (ESS) in the Power Grid` section:
 
 - Renewable energy sources.
 - Conventional thermal power plants.
@@ -123,6 +131,8 @@ In the Physical World Simulation Program, three Battery Units are deployed withi
 The physical simulation and user interface implementation are integrated within the **Power Grid Physical Simulator Module**, as shown below:
 
 ![](5_Energy_Storage_System_Design_Img/s_06.png) 
+
+`Figure-04: BESS UI in the Power Grid Cyber Range, version v0.2.0 (2025)`
 
 #### Battery Unit Simulation Parameters
 
@@ -137,54 +147,44 @@ Each battery scope dynamically provides simulated parameters and operational sta
 
 - **Time Information:** Provides the estimated time for full charge or full discharge based on the current power flow.
 
-- **Temperature Information:** *(Under development – to be implemented in Version 2.1)*
+- **Temperature Data:** *(Under development – to be implemented in Version 2.1)*
 
-In real time, the DC interface state, voltage (V), current (A), and capacity information are updated and displayed next to each battery scope on the GUI.
-
-To simulate real-world conditions, the power grid module introduces data fluctuations by adding randomized offsets to the calculated values. For example, when a battery’s energy capacity falls below 10% after extended discharge, the simulated output voltage will fluctuate within 45V–47V DC, reflecting realistic Measurement Unit (MU) reading variations.
+In real time, the DC interface state, voltage (V), current (A), and capacity information are updated and displayed next to each battery scope on the GUI. To simulate real-world conditions, the power grid module also introduces data fluctuations by adding randomized offsets to the calculated values. For example, when a battery’s energy capacity falls below 10% after extended discharge, the simulated output voltage will fluctuate within 45V–47V DC, reflecting realistic Measurement Unit (MU) reading variations.
 
 #### BESS Auto-Management Mechanisms
 
 Two layers of automatic management are implemented within the system to ensure both local autonomy and global coordination across the energy storage subsystems.
 
-**Individual Auto-Control**
+**(a) Individual Auto-Control**
 
 Each BESS operates autonomously under local PLC control. It automatically adjusts its charge/discharge behavior according to the connected OEM scope’s operational state and overall grid conditions.
 For instance:
 
-- During **high solar output** (e.g., 30 kW generation with 21 kW demand), the BESS switches to **Charging Mode** to store surplus energy.
+- During **high solar output** (e.g., sunny day 30 kW generation with 21 kW demand), the BESS switches to `Charging Mode` to store surplus energy.
 
-- During **low generation periods** (e.g., cloudy or rainy conditions with only 10 kW solar output), the BESS automatically enters **Discharge Mode** to supplement grid power.
+- During **low generation periods** (e.g., cloudy or rainy conditions with only 10 kW solar output), the BESS automatically enters `Discharge Mode` to supplement grid power.
 
 **(b) Whole-System Auto-Management**
 
-While individual BESS units perform local optimization, the HMI performs **system-level balancing**. Real-time data from all three BESS units are transmitted to the HMI, which allows operators to manually adjust control logic to maintain system stability, prevent **over-charging** or **over-discharging**, and balance the load among all BESS units.
-
-#### BESS Auto Management 
-
-The are 2 BESS Auto management mechanism in the system 
-
-Individual Auto-Control:  The BESS will automatically adjust its' state and output based on the OEM scope and the grid state. For example if the in sunny weather the solar provide 30KW power and the load only requests 21kW power, the BESS will auto switch to the charging mode to storge energy and when the weather change to raining and if the solar panel can only provide 10kW power, the BESS will auto switch to discharge mode to release power to the grid. 
-
-Whole System auto-management: Each BESS's self auto control is implemented by the PLC directly. To make the 3 BESS can work together the data of the 3 BESS will send back to HMI side and HMI will use the 3 BESS data to do manual control adjustment to balance 3 BESS 's work load to avoid the battery over charged or discharged.
+While individual BESS units perform local optimization, the HMI performs **system-level balancing**. Real-time data from all three BESS units are collected by the HMI, which allows operators to manually adjust control logic to maintain system stability, prevent **over-charging** or **over-discharging**, and balance the load among all BESS units.
 
 #### BESS State Visualization and Manual Control
 
 On the **Physical Simulation UI**, each BESS is visually represented with one of four distinct color-coded states to facilitate rapid status recognition and manual operation.
 
-**BESS Charge State **
+**BESS Battery Charge State **
 
 | Display UI State                                 | Parameters Value                                             |
 | ------------------------------------------------ | ------------------------------------------------------------ |
 | ![](5_Energy_Storage_System_Design_Img/s_07.png) | **DC Interface:** Connected<br>**Indicator Color**: Orange<br>**Battery State:** Charging<br>**Battery Capacity:** < 95%<br>**Voltage Range:** 48 V ~ 49 V DC<br>**Current Flow:** From OEM scope to Battery Scope<br>**Current Range:** 10 ~ 20 A<br>**Energy Flow:** Transformer Input > Transformer Output |
 
-**BESS Idle State – White**
+**BESS Battery Idle State **
 
 | Display UI State                                 | Parameters Value                                             |
 | ------------------------------------------------ | ------------------------------------------------------------ |
-| ![](5_Energy_Storage_System_Design_Img/s_08.png) | **DC Interface:** Connected<br>**Indicator Color**: White<br>**Battery State:** Fully charged or depleted (no OEM input)<br>**Battery Capacity:** ≥ 95% or ≤ 10%<br>**Voltage Range:** 47 V – 48 V<br>**Current Flow:** None (0 A)<br>**Current Range:** 0 A<br>**Energy Flow:** Transformer Input = Output |
+| ![](5_Energy_Storage_System_Design_Img/s_08.png) | **DC Interface:** Connected<br>**Indicator Color**: White<br>**Battery State:** Idle under fully charged or depleted (no OEM input)<br>**Battery Capacity:** ≥ 95% or ≤ 10%<br>**Voltage Range:** 47 V – 48 V<br>**Current Flow:** None (0 A)<br>**Current Range:** 0 A<br>**Energy Flow:** Transformer Input = Output |
 
-**BESS Discharge State **
+**BESS Battery Discharge State **
 
 | Display UI State                                 | Parameters Value                                             |
 | ------------------------------------------------ | ------------------------------------------------------------ |
@@ -194,13 +194,15 @@ On the **Physical Simulation UI**, each BESS is visually represented with one of
 
 | Display UI State                                 | Parameters Value                                             |
 | ------------------------------------------------ | ------------------------------------------------------------ |
-| ![](5_Energy_Storage_System_Design_Img/s_10.png) | **DC Interface:** Disconnected<br/>**Indicator Color**: Red <br/>**Battery State:** Idle<br/>**Battery Capacity:** Any<br/>**Voltage Range:** 47 V – 48 V<br/>**Current Flow:** None (0 A)<br/>**Current Range:** 0 A<br/>**Energy Flow:** Undefined |
+| ![](5_Energy_Storage_System_Design_Img/s_10.png) | **DC Interface:** Disconnected<br/>**Indicator Color**: Red<br/>**Battery State:** Idle<br/>**Battery Capacity:** Any<br/>**Voltage Range:** 47 V – 48 V<br/>**Current Flow:** None (0 A)<br/>**Current Range:** 0 A<br/>**Energy Flow:** Undefined |
 
 **Manual Overload Control**
 
-To support manual testing and failure simulation, the interface provides a **control checkbox** that allows operators to **manually disconnect** the DC interface between a battery scope and its OEM scope as shown below : 
+To support manual testing and failure simulation, the interface provides  control checkboxes that allow the operators to manually disconnect the DC interface between a battery scope and its OEM scope as shown below : 
 
 ![](5_Energy_Storage_System_Design_Img/s_11.png)
+
+`Figure-05: BESS Manual Overload Control on Physical World Simulator, version v0.2.0 (2025)`
 
 This feature enables testing of overload scenarios, grid isolation behavior, and BESS response verification under manual override conditions.
 
@@ -210,26 +212,28 @@ This feature enables testing of overload scenarios, grid isolation behavior, and
 
 ### BESS Monitor & Control — IEC-104 PLC Design
 
-This section describes the OT-level design for monitoring and controlling the three simulated BESS units. The implementation uses the project [Python Virtual PLC Simulator with IEC-60870-5-104 Communication Protocol]( https://www.linkedin.com/pulse/python-virtual-plc-simulator-iec-60870-5-104-protocol-yuancheng-liu-bov7c) to build the PLC simulation program. 
+This section describes the OT-level design for monitoring and controlling the three simulated BESS units. The implementation uses the project [Python Virtual PLC Simulator with IEC-60870-5-104 Communication Protocol]( https://www.linkedin.com/pulse/python-virtual-plc-simulator-iec-60870-5-104-protocol-yuancheng-liu-bov7c) to build the IEC104-PLC program. 
 
-For simplicity the current release runs **one IEC104 PLC instance** with **three memory banks** (one bank per BESS). The PLC fetches sensor/field values from the Physical World Simulator, executes local automatic control logic (ladder logic), updates physical components in the simulator, and reports measurements/controls back to the SCADA/HMI via IEC104. The system workflow diagram is shown below : 
+For simplicity the current release runs **one IEC104 PLC instance** with **three memory banks** (one bank per BESS). The PLC fetches MU/sensor/field values from the Physical World Simulator, executes local automatic control logic (ladder logic), updates physical components in the simulator, and reports measurements/controls back to the SCADA/HMI via IEC104. The system workflow diagram is shown below : 
 
 ![](5_Energy_Storage_System_Design_Img/s_12.png)
 
+`Figure-06: BESS IEC60870-104 PLC Workflow Diagram, version v0.2.0 (2025)`
+
 The system will loop execute the steps in below workflow sequence: 
 
-- **Step1** : Physical Simulator publishes battery measurements (voltage, current, SOC, DC link state, temperature).
-- **Step2** : PLC reads these values from the Physical Simulator and set the related IEC-104 IOA memory.
-- **Step3** : PLC ladder logic (auto/manual, interlocks, timers, hysteresis) decides on commands (charge enable, discharge enable, DC breaker open/close, alarms).
-- **Step4** : PLC writes control outputs back to the IOA memory and feed back to the Physical Simulator.
-- **Step5** :   PLC packages the measurement/control points as IEC104 objects (M_SP_NA_1, M_ME_NC_1, C_RC_TA_1, etc.) and exchanges them with SCADA/HMI.
+- **Step1** : `Physical Simulator` publishes battery measurements (voltage, current, SOC, DC link state, temperature).
+- **Step2** : PLC reads these values from the `Physical Simulator` and set the related input contact IEC-104 IOA memory.
+- **Step3** : PLC runs the pre-set ladder logic rungs (auto/manual, interlocks, timers, hysteresis) to decide the commands (charge enable, discharge enable, DC breaker open/close, alarms) for next step.
+- **Step4** : PLC writes control outputs back to the output coil IOA memory and feed back to the `Physical Simulator`.
+- **Step5** : PLC packages the measurement/control points as IEC104 objects (M_SP_NA_1, M_ME_NC_1, C_RC_TA_1, etc.) and exchanges them with SCADA/HMI.
 
 #### IEC104 Memory Mapping
 
 **Notes:**
 
-- MP = measurement point; CP = command/changeable point.
-- Use `M_SP_NA_1` for discrete states (booleans), `M_ME_NC_1` for measured analog numeric.
+- `MP` = measurement point; `CP` = command/changeable point.
+- Use `M_SP_NA_1` for discrete states (Booleans), `M_ME_NC_1` for measured analog numeric.
 - CP type `C_RC_TA_1` is used for simple command steps: Auto Mode: `c104.Step.INVALID_0` , Manual  Power OFF :  `c104.Step.LOWER` , Manual  Power ON : `c104.Step.HIGHER`, Changeable Point Type: `CP`
 
 **Solar Plant BESS IEC104 Memory Configure**
@@ -238,12 +242,12 @@ The system will loop execute the steps in below workflow sequence:
 | ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
 | 01               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_0_DC_interface_state   |
 | 02               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery_state        |
-| 03               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation Voltage    |
-| 04               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation Current    |
-| 05               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery Percentage   |
-| 06               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery Temperature  |
+| 03               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation_voltage    |
+| 04               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Operation_current    |
+| 05               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery_percentage   |
+| 06               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_0_Battery_temperature  |
 | --               | --         | --                    | --                    | --                          |
-| 11               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_Breaker |
+| 11               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_breaker |
 
 **Oil Plat BESS IEC104 Memory Configure**
 
@@ -251,12 +255,12 @@ The system will loop execute the steps in below workflow sequence:
 | ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
 | 21               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_1_DC_interface_state   |
 | 22               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery_state        |
-| 23               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation Voltage    |
-| 24               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation Current    |
-| 25               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery Percentage   |
-| 26               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery Temperature  |
+| 23               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation_voltage    |
+| 24               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Operation_current    |
+| 25               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery_percentage   |
+| 26               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_1_Battery_temperature  |
 | --               | --         | --                    | --                    | --                          |
-| 31               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_Breaker |
+| 31               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_0_DC_interface_breaker |
 
 **Station BESS IEC104 Memory Configure**
 
@@ -264,12 +268,12 @@ The system will loop execute the steps in below workflow sequence:
 | ---------------- | ---------- | --------------------- | --------------------- | --------------------------- |
 | 41               | MP         | `c104.Type.M_SP_NA_1` | False                 | BESS_2_DC_interface_state   |
 | 42               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery_state        |
-| 43               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation Voltage    |
-| 44               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation Current    |
-| 45               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery Percentage   |
-| 46               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery Temperature  |
+| 43               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation_voltage    |
+| 44               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Operation_current    |
+| 45               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery_percentage   |
+| 46               | MP         | `c104.Type.M_ME_NC_1` | 0.00                  | BESS_2_Battery_temperature  |
 | --               | --         | --                    | --                    | --                          |
-| 51               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_2_DC_interface_Breaker |
+| 51               | CP         | `c104.Type.C_RC_TA_1` | `c104.Step.INVALID_0` | BESS_2_DC_interface_breaker |
 
 #### Ladder Logic Implement Example
 
@@ -355,9 +359,11 @@ The Battery Energy Storage System (BESS) Human-Machine Interface (HMI) serves as
 
 The BESS HMI establishes an **IEC 60870-5-104 (IEC104) client connection** to the dedicated PLC controller. Through this communication channel, the system continuously retrieves live BESS operational data (voltage, current, capacity, and status) and allows secure remote control commands to be sent back to the PLC.
 
-The monitoring and control interface of the BESS is shown below:
+The monitoring and control interface of the BESS is shown below (high light in red rectangles):
 
 ![](5_Energy_Storage_System_Design_Img/s_13.png)
+
+`Figure-07: BESS Control Panel in Power Grid Cyber Range HMI, version v0.2.0 (2025)`
 
 The design integrates **five dedicated panels** that provide operators with both visualization and interactive control capabilities:
 
@@ -387,6 +393,16 @@ The design integrates **five dedicated panels** that provide operators with both
 - **Function**: Displays active **error and warning codes** received from each BESS module, allowing the operator to quickly identify abnormal states and trigger appropriate maintenance or safety actions.
 
 Through IEC 60870-104 communication and structured SCADA panels, operators gain full situational awareness of system performance, communication status, and power link control, ensuring both **grid reliability** and **operational safety**.
+
+
+
+------
+
+### Conclusion
+
+In summary for the simulated Battery Energy Storage System (BESS) within a Power Grid OT Cyber Range, the work integrating physical process simulation, OT controller logic with IEC-104 PLCs, and a centralized SCADA HMI, the project successfully creates a realistic and manageable replica of BESS operations. While a simplified distillation of real-world complexity, this functional framework provides a vital platform for hands-on training, cybersecurity exercises, and operational research, ultimately enhancing the understanding and resilience of modern power grid infrastructures in a controlled, simulated environment.
+
+
 
 ------
 
