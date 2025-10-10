@@ -23,9 +23,35 @@ This design framework highlights how battery-based storage can be realistically 
 # License:     GNU General Public License V3
 ```
 
-Table of Contents
+**Table of Contents**
 
 [TOC]
+
+- [Design of Energy Storage System In Power Grid OT Cyber Range](#design-of-energy-storage-system-in-power-grid-ot-cyber-range)
+    + [Introduction](#introduction)
+      - [Application in Cyber Exercises](#application-in-cyber-exercises)
+    + [Background: Energy Storage Systems (ESS) in the Power Grid](#background--energy-storage-systems--ess--in-the-power-grid)
+    + [BESS Architecture Overview](#bess-architecture-overview)
+        * [Level 0 OT Physical Process Field I/O  Device Layer](#level-0-ot-physical-process-field-i-o--device-layer)
+        * [Level 1 OT System Controller LAN](#level-1-ot-system-controller-lan)
+        * [Level 2 Power Grid Control Center Processing LAN](#level-2-power-grid-control-center-processing-lan)
+    + [Physical World Simulation Design](#physical-world-simulation-design)
+      - [Battery Unit Simulation Parameters](#battery-unit-simulation-parameters)
+      - [BESS Auto-Management Mechanisms](#bess-auto-management-mechanisms)
+      - [BESS State Visualization and Manual Control](#bess-state-visualization-and-manual-control)
+    + [BESS Monitor & Control — IEC-104 PLC Design](#bess-monitor---control---iec-104-plc-design)
+      - [IEC104 Memory Mapping](#iec104-memory-mapping)
+      - [Ladder Logic Implement Example](#ladder-logic-implement-example)
+    + [Battery Energy Storage System (BESS) SCADA HMI Design](#battery-energy-storage-system--bess--scada-hmi-design)
+      - [IEC 60617 Circuit Diagram Display Panel](#iec-60617-circuit-diagram-display-panel)
+      - [IEC 104 PLC [Storage Control] Panel](#iec-104-plc--storage-control--panel)
+      - [Power Storage Link Control Panel](#power-storage-link-control-panel)
+      - [IED-MU Detail Data Panel [Energy Capacity]](#ied-mu-detail-data-panel--energy-capacity-)
+      - [Alert Code Display Panel](#alert-code-display-panel)
+    + [Conclusion](#conclusion)
+    + [Reference Doc Link](#reference-doc-link)
+
+
 
 ------
 
@@ -399,6 +425,8 @@ Through IEC 60870-104 communication and structured SCADA panels, operators gain 
 ------
 
 ### Conclusion
+
+![](5_Energy_Storage_System_Design_Img/title.png)
 
 In summary for the simulated Battery Energy Storage System (BESS) within a Power Grid OT Cyber Range, the work integrating physical process simulation, OT controller logic with IEC-104 PLCs, and a centralized SCADA HMI, the project successfully creates a realistic and manageable replica of BESS operations. While a simplified distillation of real-world complexity, this functional framework provides a vital platform for hands-on training, cybersecurity exercises, and operational research, ultimately enhancing the understanding and resilience of modern power grid infrastructures in a controlled, simulated environment.
 
