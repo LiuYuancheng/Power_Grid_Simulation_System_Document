@@ -78,6 +78,23 @@ The simulated BESS system spans multiple layers of the Operational Technology (O
 | [7] DC interface              | Represents 48 V DC power transmission between the battery system and collection node | level 0      |
 | [9] OEM Scope                 | Simulates a basic DC–AC converter integrated into the plant’s AC–AC step-up transformer | level 0      |
 
+The system components communication data flow and OT protocol is shown below diagram : 
+
+```mermaid
+flowchart LR
+    A[Physical World Simulator] --> |Simulated_Electrical_Signal_UDP|B 
+    B[Metering Unit Simulator] --> |IEC61850|C
+    C[IEC104PLC Simulator] --> |Simulated_Electrical_Signal_UDP|A
+    C[IEC104PLC Simulator] --> |IEC60870-5-104|D
+    D[SCADA-HMI] --> |IEC60870-5-104|C
+```
+
+| Layer                     | Protocol                            | Function Description                                         |
+| ------------------------- | ----------------------------------- | ------------------------------------------------------------ |
+| **Field Layer**           | `Simulated Electrical Signal (UDP)` | Transfers analog/digital measurement data between simulators to represent real-world electrical dynamics. |
+| **Process/Station Layer** | `IEC 61850`                         | Enables standardized substation data modeling and communication between Metering Units (IEDs) and PLCs. |
+| **Control Layer**         | `IEC 60870-5-104`                   | Provides real-time telecontrol communication between PLCs and SCADA systems over TCP/IP networks. |
+
 #### Application in Cyber Exercises
 
 As we introduced in the `Project Design Purpose` section, the integration of BESS significantly enhances the **realism and training value** of the Power Grid OT Cyber Range, all the design serves for the application in educational, cyber event, training and research. 
@@ -445,4 +462,4 @@ In summary for the simulated Battery Energy Storage System (BESS) within a Power
 
 ------
 
-> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 09/10/2025 if you have any question, please send me a message. 
+> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 11/10/2025 if you have any question, please send me a message. 
