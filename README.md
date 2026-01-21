@@ -1,6 +1,6 @@
 # Power_Grid_Simulation_System_Document [Wiki]
 
-The **Mini OT Power Grid Simulation System** is a digital equivalent software platform designed to simulate the core operations of a hybrid power grid system, including hybrid power generation (natural gas power plants, solar power plants, and wind turbine farms), high-voltage power transmission and a three-level step-down power distribution system. The simulation integrates a SCADA system that incorporates PLCs for remote system control, RTUs and MUs for real-time data monitoring, and an HMI interface for operators to manage the grid. 
+The **Mini OT Power Grid Simulation System** is a digital equivalent software platform designed to simulate the core operations of a hybrid power grid system, including hybrid power generation (natural gas power plants, solar power plants, and wind turbine farms), energy storage system, high-voltage power transmission and a three-level step-down power distribution system. The simulation integrates a SCADA system that incorporates PLCs for remote system control, RTUs and MUs for real-time data monitoring, and an HMI interface for operators to manage the grid. 
 
 This repository provides a document Wiki for the "Power Grid Simulation System" Project, It includes an introduction, system design documentation, and user guidelines. **Please note that the repository does not include the program's source code.**
 
@@ -115,13 +115,13 @@ This section will list the document files in each Wiki folder
 - The document of the main system, subsystem, network structure and program. 
 - Folder : `2_SystemDesign_Doc`
 
-| File Name                          | Wiki Index | Version | Description                                                  | Doc Link                                                    |
-| ---------------------------------- | ---------- | ------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| `1_System_Design.md`               | Wiki_2_1   | v_0.2.0 | The main system design introduction.                         | [Link](2_SystemDesign_Doc/1_System_Design.md)               |
-| `2_PLC_Breakers_Control_Design.md` | Wiki_2_2   | v_0.2.0 | The program PLC simulator breakers control flow design introduction. | [Link](2_SystemDesign_Doc/2_PLC_Breakers_Control_Design.md) |
-| `3_Network_Packet_Design.md`       | Wiki_2_3   | v_0.2.0 | lvl2 OT network communication design document.               | [Link](2_SystemDesign_Doc/3_Network_Packet_Design.md)       |
-| `4_MU_RTU_Monitor_Design.md`       | Wiki_2_4   | v_0.2.0 | The MU-IED-RTU simulation work flow design introduction      | [Link](2_SystemDesign_Doc/4_MU_RTU_Monitor_Design.md)       |
-|                                    |            |         |                                                              |                                                             |
+| File Name                           | Wiki Index | Version | Description                                                  | Doc Link                                                     |
+| ----------------------------------- | ---------- | ------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `1_System_Design.md`                | Wiki_2_1   | v_0.2.0 | The main system design introduction.                         | [Link](2_SystemDesign_Doc/1_System_Design.md)                |
+| `2_PLC_Breakers_Control_Design.md`  | Wiki_2_2   | v_0.2.0 | The program PLC simulator breakers control flow design introduction. | [Link](2_SystemDesign_Doc/2_PLC_Breakers_Control_Design.md)  |
+| `3_Network_Packet_Design.md`        | Wiki_2_3   | v_0.2.0 | lvl2 OT network communication design document.               | [Link](2_SystemDesign_Doc/3_Network_Packet_Design.md)        |
+| `4_MU_RTU_Monitor_Design.md`        | Wiki_2_4   | v_0.2.0 | The MU-IED-RTU simulation work flow design introduction      | [Link](2_SystemDesign_Doc/4_MU_RTU_Monitor_Design.md)        |
+| `5_Energy_Storage_System_Design.md` | Wiki_2_5   | v_0.2.0 | The BESS Simulation design document                          | [Link](2_SystemDesign_Doc/5_Energy_Storage_System_Design.md) |
 
 #### [3] System Configuration Documents
 
