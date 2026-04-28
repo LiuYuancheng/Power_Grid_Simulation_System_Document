@@ -4,7 +4,7 @@ This document provides detailed instructions on remotely accessing various VMs i
 
 ![](../img/logo_small.png)
 
-```
+```python
 # Author:      Yuancheng Liu
 # Created:     2025/02/18
 # Version:     v_0.0.2
