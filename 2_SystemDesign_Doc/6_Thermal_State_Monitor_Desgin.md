@@ -67,27 +67,39 @@ The 5G gateway aggregates temperature measurements from multiple sensors and tra
 
 ### 2. Cyber Twin ISA-95 Architecture 
 
-To implement the Thermal State Monitoring System (TSMS) in the power grid cyber twin, several different component and modules are developed and deploy in different OT layers of the cyber twin under the  ISA-95 standard as shown below: 
+To implement the Thermal State Monitoring System (TSMS) in the power grid cyber twin, several different component and modules are developed and deploy in different OT layers of the cyber twin under the ISA-95 standard as shown below: 
+
+![](6_Thermal_State_Monitor_Desgin_Img/s_04.png)
+
+The project is organized into five major functional components:
+
+**Real-Time Power Grid Thermal State Simulation**
+
+- Generates simulated temperature data for critical power grid assets, including transformers, high-voltage switchgear, power transmission cables, electrical connectors, and Battery Energy Storage System (BESS) components. These thermal profiles represent the physical processes within the power grid cyber twin and serve as the primary data source for the monitoring system.
+
+**Wi-Fi IoT Temperature Sensor Simulator**
+
+- Simulates the core functions of a wireless IoT temperature sensor based on the operational principles of the Schneider ZBRTT1 device. The simulator periodically measures the thermal state of power system components and transmits temperature readings through a wireless network.
+
+**5G IoT Gateway Simulator**
+
+- Simulates a 5G-enabled industrial IoT gateway deployed near field devices, such as within substations or power distribution facilities. The gateway collects temperature measurements from multiple Wi-Fi-connected sensors and forwards the aggregated data to the power grid control center through a long-range 5G communication network.
+
+**IoT Communication and Data Security**
+
+- Simulates the data exchange process between IIoT devices using the Message Queuing Telemetry Transport (MQTT) protocol. The module also demonstrates message encryption and decryption mechanisms inspired by industrial wireless monitoring systems, providing a simplified representation of data confidentiality and communication security.
+
+**Data Visualization and Abnormal Condition Detection**
+
+- Simulates both local and centralized thermal monitoring HMIs for real-time data visualization, trend analysis, alarm management, and abnormal condition detection. The system can identify temperature anomalies, overheating events, and potential fire hazards based on predefined operational thresholds.
+
+
+
+------
 
 
 
 
-
-
-
-
-
-
-
-The **Thermal State Monitoring System (TSMS)** in a power grid is a continuous, real-time diagnostic framework designed to track, analyze, and manage the temperature profiles of critical electrical infrastructure (cables, transformers, switchgear, and overhead lines) to prevent equipment failure, reduce fire risks, and optimize power delivery. 
-
-A TSMS relies on a network of specialized sensors and advanced data processing to map the grid's thermal landscape:
-
-- **Fiber Optic Sensing (DTS):** Uses optical cables running alongside power lines to provide real-time temperature profiles over long distances.
-- **Infrared Thermography:** Non-contact thermal cameras placed in substations to monitor transformers and switchgear for abnormal heat signatures. 
-- **IoT & Wireless Sensors:** Self-powered sensors placed directly on high-voltage components (like joints and busbars) to transmit continuous temperature readings
-
-The idea of this simulated WIFI and 5G IoT based Power Grid Thermal State Monitoring System comes from the Schneider Electric's IOT thermal sensor's product video published 5 years ago : https://youtu.be/LKCDbCJlYPo?si=8S81zykMe3NsBzSZ, so I want also follow the idea to simulate the similar function in the cyber twin system I developed. 
 
 #### 1.1 Project Overview
 
