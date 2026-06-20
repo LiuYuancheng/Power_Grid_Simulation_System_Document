@@ -335,23 +335,51 @@ All the data remains protected throughout its entire lifecycle, from generation 
 
 ------
 
+### 7. Data Visualization and Abnormal Condition Detection
 
+#### 7.1 Local Thermal State HMI
 
+In the power station, power plant, there will be several state monitoring HMI for the staff to check the system operation state as shown below : 
 
+![](6_Thermal_State_Monitor_Desgin_Img/s_09.png)
 
+In the cyber twin thermal state management system, we also developed a flask web based local HMI program which can host in different computer, pad and terminals to monitor the system operational data in real time. The UI is shown below: 
 
+![](6_Thermal_State_Monitor_Desgin_Img/s_10.png)
 
+Each thermal IoT will be categorized in related group,  data and related operation range will shown in the item's tab. And the alert will be shown at the bottom.
 
+Before use, there will be a fast configuration step, each local HMI need to peering with the IoT gateway in the same WiFi network or local ethernet: 
 
+- IoT gateway IP address and MQTT port. 
+- Install the IoT gateway AES128 key and iv in the local HMI. 
+- Added the display parameter's list in the HMI configuration file and set the alarm trigger data range. 
 
+Each Local HMI can only linked to one of the 3 IoT gateway. 
 
+As the HMI provide web service, so one HMI can provide data visualization for multiple device (computer, pad, terminal, or phone) in the network with the username and password access authorization.  The data flow is shown below:
 
+```mermaid
+flowchart LR
+    A[IoT Sensor] --> B
+    B[IoT Gateway] --> C
+    C[Local HMI] --> D
+    D[Data Visualization Web Host]
+    D --> |HTTP|E
+    D --> |HTTP|F
+    D --> |HTTP|G
+    D --> |HTTP|H
+    E[Monitor Computer]
+    F[Monitor Pad]
+    G[Monitor Console]
+    H[Monitor Phone]
+```
 
+#### 7.2 OCC Remote Thermal State HMI 
 
+For the OCC remote Thermal State Visualization HMI, as its geo-location is far away from the power plant/station in the grid, it will use 5G network to connect to all the 3 IoT gateway to fetch the data. 
 
-
-
- 
+ For the data visulization.
 
 
 
