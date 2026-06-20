@@ -188,10 +188,10 @@ The workflow of the ZBRTT1 Thermal IoT Simulator is shown below :
 
 The simulator consists of four major functional modules:
 
-- UDP Client Module
-- Data Encryption Module
-- MQTT Data Structure Module
-- MQTT Client Module
+- UDP Client Module : Real time thermal state data fetching. 
+- Data Encryption Module : IoT Data Protection. 
+- MQTT Data Structure Module : Data processing and timestamp combination. 
+- MQTT Client Module : Data publish to upper layer OT device. 
 
 #### 4.2 Data Exchange Interfaces
 
@@ -204,7 +204,7 @@ Each IoT simulator is deployed as an independent virtual machine (VM) within the
 
 When a new temperature value is received from the Physical World Simulator, the IoT simulator performs the following sequence of operations:
 
-- **Step 1 – Receive Thermal Data** : The UDP Client receives the latest thermal measurement from the Physical World Simulator.
+- **Step 1 – Receive Thermal Data** : The UDP Client receives the latest thermal measurement from the Physical World Simulator then add the current timestamp to the thermal data `temperature value; timestamp` . 
 - **Step 2 – Encrypt Sensor Data** : the received thermal data is encrypted using the AES-128 encryption algorithm with a pre-configured AES secret key (`AES_Key`) and a pre-configured initialization vector (`IoT_IV`)
 - **Step 3 – Construct MQTT Payload** : ciphertext is stored within the simulator's MQTT data structure and associated with the corresponding MQTT topic `powergrid/thermal/<sensor_id>`. 
 - **Step 4 – Publish Data to the IoT Gateway** : MQTT Client publishes the encrypted payload through the simulated Wi-Fi network to the IoT Gateway Simulator.
@@ -212,6 +212,146 @@ When a new temperature value is received from the Physical World Simulator, the 
 
 
 ------
+
+### 5. Design of 5G IoT Gateway Simulator
+
+To simulate the communication architecture of a modern power grid thermal monitoring system, the 17 ZBRTT1 Thermal IoT Simulators are divided into multiple deployment groups representing sensors installed across different substations, transformer stations, and power distribution facilities. Each group of IoT sensors communicates with a designated 5G IoT Gateway Simulator.
+
+The System workflow diagram is shown below: 
+
+![](6_Thermal_State_Monitor_Desgin_Img/s_08.png)
+
+#### 5.1 Gateway Deployment Architecture
+
+Each 5G IoT Gateway Simulator is deployed as an independent virtual machine within the cyber range environment. The gateway contains two network interfaces to simulate its role as a bridge between field devices and higher-level monitoring systems.
+
+**5.1.1 Level 2 OT Network Interface (2.4 GHz Wi-Fi)**
+
+The first network interface is connected to the simulated **Level 2 OT Blue Team Network**, representing a local 2.4 GHz Wi-Fi network used by the thermal IoT sensors. The interface will be responsible for:
+
+- Receiving MQTT publications from multiple ZBRTT1 Thermal IoT Simulators.
+- Providing MQTT subscription services to local monitoring HMIs.
+
+**5.1.2 Level 3 OT Network Interface (5G Network)**
+
+The second network interface is connected to the simulated **Level 3 OT Blue Team Network**, representing a private industrial 5G communication network. This interface allows:
+
+- Remote monitoring systems to subscribe to thermal monitoring data.
+- Data transmission between substations and the Power Grid Control Center.
+
+#### 5.2 MQTT Communication Services
+
+Each gateway hosts an MQTT Broker that serves as the communication hub for all connected devices and monitoring applications. The broker supports three primary communication flows:
+
+- MQTT Publish Requests from IoT Sensors via Wi-Fi network.
+- MQTT Subscribe Requests from Local Monitoring HMI through the simulated 2.4 GHz Wi-Fi network.
+- MQTT Subscribe Requests from OCC Monitoring HMI subscribes through the simulated 5G network.
+
+#### 5.3 Gateway Database Design
+
+To support data processing and security operations, each gateway maintains two dedicated databases.
+
+**5.3.1 IoT Security Database (DB1)** 
+
+The first database stores the cryptographic information associated with each connected IoT sensor, including:
+
+- Sensor Identifier (Sensor ID)
+- AES-128 Encryption Key
+- Initialization Vector (IV) / Nonce
+
+**5.3.2 Local Historian Database (DB2)**
+
+The second database functions as a local historian system that archives thermal measurements received from the connected IoT sensors. The historian database stores:
+
+- Sensor temperature readings
+- Gateway aggregation records
+- Event timestamps
+- Communication status information
+
+#### 5.4 Thermal Data Aggregation Workflow
+
+When a thermal IoT sensor publishes a new encrypted temperature measurement, the gateway performs the following processing sequence.
+
+- **Step 1 – Receive MQTT Message** : The MQTT Broker receives the encrypted payload published by a thermal IoT sensor.
+- **Step 2 – Decrypt Sensor Data** : The gateway identifies the originating sensor and retrieves the corresponding AES encryption key and initialization vector from the IoT Security Database. The received payload is then decrypted to recover the original temperature measurement.
+- **Step 3 – Aggregate Sensor Measurements **: The gateway continuously maintains the latest thermal reading from every connected sensor. After processing incoming updates, the gateway combines the most recent measurements into a consolidated data structure. Example: 
+
+```python
+{
+    'Gateway_ID': '0001001',
+    'Sensors':{'TF_SO': 32.1, 'TF_WI': 23.7, 'TF_GA', 'BT_SO': 29.4, 'BT_GA': 16.0, 'BT_ST':BT_ST},
+    'timestamp': ...
+}
+```
+
+- **Step 4 – Archive Gateway Data** : The aggregated thermal data structure is stored in the Local Historian Database for future analysis. 
+- **Step 5 – Gateway-Level Encryption** :  After aggregation, the gateway performs a second AES-128 encryption process using its own gateway-specific encryption key and initialization vector.
+- **Step 6 – Publish Gateway Data** : The encrypted gateway payload is stored within the MQTT data structure and made available for subscription by authorized monitoring systems.
+
+
+
+------
+
+### 6. Design of IoT Communication and Data Security
+
+The simulated thermal monitoring system relies on Industrial Internet of Things (IIoT) communication technologies to exchange thermal state data between field sensors, IoT gateways, and monitoring HMIs. To emulate a realistic industrial deployment, the cyber twin incorporates both MQTT-based communication and multiple layers of data protection mechanisms.
+
+#### 6.1 IoT Data Communication
+
+he thermal monitoring system uses the **Message Queuing Telemetry Transport (MQTT)** protocol as the primary communication mechanism between the thermal IoT sensors, IoT gateways, and monitoring HMIs.
+
+For detailed information regarding the MQTT communication framework, protocol implementation, and data exchange mechanisms used in this project, please refer to the MQTT Communication Module documentation:
+
+Python Virtual RTU/IIoT Simulator – IEC 20922 MQTT Protocol Communication Module : https://www.linkedin.com/pulse/python-virtual-rtuiiot-simulator-iec-20922-mqtt-protocol-liu-gbqnc
+
+#### 6.2 Data Exchange Security
+
+To simulate the security architecture commonly deployed in industrial IoT environments, the system implements two layers of communication protection:
+
+- **Transport-Level Security** : At the MQTT communication layer, the system supports ****Secure Sockets Layer (SSL) and Transport Layer Security (TLS) technologies to establish encrypted communication channels between MQTT clients and MQTT brokers.
+- **Application-Level Data Encryption** : In addition to SSL/TLS transport security, the thermal monitoring system applies AES-128 encryption directly to the sensor payload before transmission
+
+After decrypting and aggregating the thermal measurements from multiple sensors, the IoT Gateway performs a second encryption operation before making the data available to monitoring clients.
+
+- Each ZBRTT1 Thermal IoT Simulator is assigned an `AES-128 encryption key (AES_Key)` and `Initialization Vector (IV).` 
+- Each gateway maintains its own Gateway and `AES-128 Encryption Key` and `Gateway Initialization Vector (IV)`. 
+
+The Gateway-to-HMI Data Protection flow is shown below:
+
+```mermaid
+flowchart LR
+    A[IoT Sensor] --> |1st AES Encryption|B
+    B[IoT Gateway] --> |1st AES Decryption|C
+    C[Data Aggregation] --> |2nd AES Encryption|D
+    D[MQTT Broker] --> |2nd AES Decryption|E
+    D[MQTT Broker] --> |2nd AES Decryption|F
+    E[Local HMI]
+    F[OCC Remote HMI] 
+```
+
+All the data remains protected throughout its entire lifecycle, from generation at the simulated field sensor to visualization at the monitoring console.
+
+
+
+------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
 
