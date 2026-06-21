@@ -26,6 +26,35 @@ The idea of building the system is inspired by the functionality of the [Schneid
 
 [TOC]
 
+- [Design of a Simulated 5G & Wi-Fi IIoT Thermal State Monitoring System (TSMS) for a Power Grid Cyber Twin](#design-of-a-simulated-5g---wi-fi-iiot-thermal-state-monitoring-system--tsms--for-a-power-grid-cyber-twin)
+    + [1. Introduction](#1-introduction)
+      - [1.1 Project Overview](#11-project-overview)
+    + [2. Cyber Twin ISA-95 Architecture](#2-cyber-twin-isa-95-architecture)
+      - [2.1 System Components and Function](#21-system-components-and-function)
+    + [3. Design of Power Grid Thermal State Simulation](#3-design-of-power-grid-thermal-state-simulation)
+      - [3.1 Simulated Thermal Data Generation](#31-simulated-thermal-data-generation)
+      - [3.2 Simulated Thermal Data Range](#32-simulated-thermal-data-range)
+      - [3.3 Data Interaction and Connection](#33-data-interaction-and-connection)
+    + [4. Design of ZBRTT1 Thermal IoT Simulator](#4-design-of-zbrtt1-thermal-iot-simulator)
+      - [4.1 Simulator Architecture](#41-simulator-architecture)
+      - [4.2 Data Exchange Interfaces](#42-data-exchange-interfaces)
+      - [4.3 Thermal Data Processing Workflow](#43-thermal-data-processing-workflow)
+    + [5. Design of 5G IoT Gateway Simulator](#5-design-of-5g-iot-gateway-simulator)
+      - [5.1 Gateway Deployment Architecture](#51-gateway-deployment-architecture)
+      - [5.2 MQTT Communication Services](#52-mqtt-communication-services)
+      - [5.3 Gateway Database Design](#53-gateway-database-design)
+      - [5.4 Thermal Data Aggregation Workflow](#54-thermal-data-aggregation-workflow)
+    + [6. Design of IoT Communication and Data Security](#6-design-of-iot-communication-and-data-security)
+      - [6.1 IoT Data Communication](#61-iot-data-communication)
+      - [6.2 Two Layers Data Exchange Security](#62-two-layers-data-exchange-security)
+    + [7. Data Visualization and Abnormal Condition Detection](#7-data-visualization-and-abnormal-condition-detection)
+      - [7.1 Local Thermal State HMI](#71-local-thermal-state-hmi)
+      - [7.2 OCC Remote Thermal State HMI](#72-occ-remote-thermal-state-hmi)
+      - [7.3 Abnormal Condition Detection and Alarm Management](#73-abnormal-condition-detection-and-alarm-management)
+    + [8. Conclusion and Reference](#8-conclusion-and-reference)
+      - [8.2 Conclusion](#82-conclusion)
+      - [8.1 Reference Link](#81-reference-link)
+
 ------
 
 ### 1. Introduction
@@ -154,9 +183,9 @@ The simulator uses realistic operational temperature ranges derived from commonl
 
 **3.2.3 Battery Energy Storage System (BESS) Temp Range** 
 
-| Optimal operational Rrange | Extreme weather range | Over heat range |
-| -------------------------- | --------------------- | --------------- |
-| 15°C to 35°C (avg 25 °C)   | 35°C to 50/55°C       | Above 60 °C     |
+| Optimal operational range | Extreme weather range | Over heat range |
+| ------------------------- | --------------------- | --------------- |
+| 15°C to 35°C (avg 25 °C)  | 35°C to 50/55°C       | Above 60 °C     |
 
 **Remark** : Battery temperature is a critical safety parameter. Excessive temperatures can reduce battery performance, shorten service life, and potentially increase the risk of thermal runaway events.
 
@@ -474,6 +503,8 @@ The system integrates five major functional components: a real-time thermal stat
 
 By simulating the complete data flow—from physical-world thermal generation through encrypted sensor transmission, gateway aggregation, and secure remote visualization—the cyber twin provides a realistic yet simplified representation of modern power grid thermal monitoring infrastructure. The modular architecture and configurable threshold-based alarm system enable trainees and researchers to explore operational workflows, practice incident response procedures, and study the cybersecurity implications of IIoT deployments in critical infrastructure environments. Importantly, as noted at the outset, this simulation intentionally distills rather than replicates the full complexity of real-world power grid monitoring systems, focusing instead on capturing the essential operational and security patterns that are most relevant for cyber exercise and educational scenarios. Future extensions could incorporate additional sensor types, more sophisticated anomaly detection algorithms, and integration with broader grid management systems to further enhance the fidelity and educational value of the cyber twin environment.
 
+https://youtu.be/WFgUWYTQUo4?si=mFBM7a2tzbGjlASd
+
 #### 8.1 Reference Link
 
 - https://github.com/LiuYuancheng/Power_Grid_Simulation_System_Document
@@ -481,3 +512,7 @@ By simulating the complete data flow—from physical-world thermal generation th
 - https://www.se.com/au/en/download/document/GDE58746/
 
 
+
+------
+
+> last edit by Liu Yuancheng (liu_yuan_cheng@hotmail.com) by 20/06/2026 if you have any question, please send me a message. 
