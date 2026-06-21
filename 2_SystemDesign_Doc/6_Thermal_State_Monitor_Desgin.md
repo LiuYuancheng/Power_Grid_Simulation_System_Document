@@ -1,14 +1,14 @@
 # Design of a Simulated 5G & Wi-Fi IIoT Thermal State Monitoring System (TSMS) for a Power Grid Cyber Twin
 
-**Project Design Purpose** : This article introduces the design and implementation of a simulated Industrial Internet of Things (IIoT)-based thermal state monitoring system developed as part of the OT Power Grid Cyber Twin environment. The project recreates the core operational concepts of a wireless temperature monitoring solution, including Wi-Fi-IoT temperature sensors, a 5G IoT gateway, and a monitoring and control Human-Machine Interface (HMI).
+**Project Design Purpose** : This article introduces the design and implementation of a simulated Industrial Internet of Things (IIoT)-based thermal state monitoring system developed as part of the [OT Power Grid Cyber Twin](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc). The project is aim to recreate the core operational concepts of a wireless temperature monitoring solution, including Wi-Fi-IoT temperature sensors, a 5G IoT gateway, and two monitoring and control Human-Machine Interface (HMI)s.
 
-The system is inspired by the functionality of the [Schneider Electric ZBRTT1 2.4KHz Wireless Temperature IoT Sensor](https://www.se.com/sg/en/product/ZBRTT1/wireless-transmitter-harmony-xb5r-transmitter-components-for-wireless-temperature-sensors-green-2400mhz/) solution and demonstrates how thermal condition monitoring can support power grid operations, equipment health assessment, abnormal condition detection, and fire risk alarm generation in modern electrical infrastructure. The project is organized into five major functional components:
+The idea of building the system is inspired by the functionality of the [Schneider Electric ZBRTT1 2.4KHz Wireless Temperature IoT Sensor](https://www.se.com/sg/en/product/ZBRTT1/wireless-transmitter-harmony-xb5r-transmitter-components-for-wireless-temperature-sensors-green-2400mhz/) solution and demonstrates how thermal condition monitoring can support power grid operations, equipment health assessment, abnormal condition detection, and fire risk alarm generation in modern electrical infrastructure. The project is organized into five major functional components:
 
-- Real-Time Power Grid Thermal State Generation and Simulation
-- Wi-Fi IIoT Power Grid Components Temperature Sensor 
-- 5G Power Grid  Thermal IIoT Sensors Gateway Simulation
-- System Components Communication and Data Transmission Security Function
-- Thermal State Data Visualization and Abnormal Condition Detection
+- Real-Time Power Grid Thermal State Generation and Simulation Module.
+- Wi-Fi IIoT Power Grid Components Temperature Sensor Simulator.
+- 5G Power Grid Thermal IIoT Sensors Gateway Simulation Module.
+- System Components Communication and Data Transmission Security Function. 
+- Thermal State Data Visualization and Abnormal Condition Detection. 
 
 > **Important** : The simulated thermal state monitoring system in cyber twin will distill (**NOT** 1:1 emulate) a few OT processes from the real world and use digital constructs to represent them for the cyber exercise and education usage. The real world power grid's thermal monitor and control system will be much more complex than what I introduced in the article. 
 
@@ -40,13 +40,13 @@ The idea for the simulated **Wi-Fi and 5G IIoT-based Power Grid Thermal State Mo
 
 #### 1.1 Project Overview
 
-The project overview diagram is shown below:
+The project design overview diagram is shown below :
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_03.png)
 
 **1.1.1 Monitored Power Grid OT Components** 
 
-There will be 4 type of components' thermal state will be monitored: 
+There will be 4 type of components' thermal state (in power transmission process) will be monitored: 
 
 - Power Grid Transformers
 - Cable Connectors and Joints
@@ -67,7 +67,7 @@ The 5G gateway aggregates temperature measurements from multiple sensors and tra
 
 ### 2. Cyber Twin ISA-95 Architecture 
 
-To implement the Thermal State Monitoring System (TSMS) in the power grid cyber twin, several different component and modules are developed and deploy in different OT layers of the cyber twin under the ISA-95 standard as shown below: 
+To implement the Thermal State Monitoring System (TSMS) in the power grid cyber twin, several components and modules are developed and deployed in different OT layers of the cyber twin under the ISA-95 standard as marked below: 
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_04.png)
 
@@ -337,27 +337,68 @@ All the data remains protected throughout its entire lifecycle, from generation 
 
 ### 7. Data Visualization and Abnormal Condition Detection
 
+The final layer of the simulated thermal monitoring system is responsible for visualizing thermal data collected from field devices and detecting abnormal operating conditions. To support both local operations and centralized grid management, the cyber twin deploys two types of Human-Machine Interfaces (HMIs) : Local Thermal State Monitoring HMIs and a Remote OCC Thermal State Monitoring HMI.
+
+The communication architecture between the monitoring systems and IoT gateways is shown below: 
+
+![](6_Thermal_State_Monitor_Desgin_Img/s_12.png)
+
+A total of four (three local and one remote) monitoring HMIs are deployed within the cyber twin:
+
+- Power Generation Area Thermal Monitoring HMI (local)
+- Power Transmission Area Thermal Monitoring HMI (local)
+- Power Distribution Area Thermal Monitoring HMI (local)
+- Power Grid OCC Remote Thermal Monitoring HMI (remote)
+
+The three local HMIs connect to their corresponding IoT gateways through the simulated **2.4 GHz Wi-Fi network**, while the OCC HMI communicates with all gateways through the simulated **5G network**. 
+
 #### 7.1 Local Thermal State HMI
 
-In the power station, power plant, there will be several state monitoring HMI for the staff to check the system operation state as shown below : 
+In real-world power plants, substations, and transmission facilities, operators continuously monitor equipment temperatures to identify abnormal conditions before they develop into equipment failures or fire hazards.
+
+Examples of industrial thermal monitoring HMIs are shown below.
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_09.png)
 
-In the cyber twin thermal state management system, we also developed a flask web based local HMI program which can host in different computer, pad and terminals to monitor the system operational data in real time. The UI is shown below: 
+**7.1.1 Local Thermal State HMI UI Design** 
+
+To simulate this functionality, a **Flask-based Web HMI** was developed as part of the cyber twin environment. The HMI can be deployed on industrial workstations, operator terminals, tablets, or other monitoring devices to provide real-time visualization of thermal data collected from nearby IoT sensors.
+
+The Local Thermal State Monitoring HMI is shown below: 
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_10.png)
 
-Each thermal IoT will be categorized in related group,  data and related operation range will shown in the item's tab. And the alert will be shown at the bottom.
+**7.1.2 Local Thermal State HMI Features** 
 
-Before use, there will be a fast configuration step, each local HMI need to peering with the IoT gateway in the same WiFi network or local ethernet: 
+The Local HMI provides the following capabilities: Real-time temperature monitoring, Sensor grouping based on monitored asset categories, Equipment status indication, Alarm and warning display and Multi-device web access.
 
-- IoT gateway IP address and MQTT port. 
-- Install the IoT gateway AES128 key and iv in the local HMI. 
-- Added the display parameter's list in the HMI configuration file and set the alarm trigger data range. 
+The monitored sensors are organized into logical groups such as: Power Transformers, Power Transmission Cables, Cable Connectors and Battery Energy Storage Systems (BESS). 
 
-Each Local HMI can only linked to one of the 3 IoT gateway. 
+Each monitored parameter displays: Current temperature value, Operational status, Warning threshold and Alarm threshold. 
 
-As the HMI provide web service, so one HMI can provide data visualization for multiple device (computer, pad, terminal, or phone) in the network with the username and password access authorization.  The data flow is shown below:
+**7.1.3 Local HMI Configuration**
+
+Before operation, each Local HMI must be paired with the corresponding IoT Gateway within the same local network.
+
+The configuration process includes:
+
+- Configuring the IoT Gateway IP address.
+- Configuring the MQTT Broker communication port.
+- Installing the gateway AES-128 encryption key and initialization vector (IV).
+- Defining the list of monitored parameters.
+- Configuring warning and alarm temperature thresholds.
+
+Because each Local HMI is designed to monitor a specific operational area, it can only subscribe to a single IoT Gateway.
+
+**7.1.4 Multi-Device Visualization**
+
+The Local HMI also functions as a lightweight web server. Once connected to the IoT Gateway, it can provide visualization services to multiple authorized devices within the local network.
+
+Supported client devices include: Operator Workstations, Industrial Consoles, Tablets, Smartphones and Engineering Laptops. 
+
+User authentication is enforced through username and password authorization before access to monitoring data is granted.
+
+The data flow is shown below:
 
 ```mermaid
 flowchart LR
@@ -375,33 +416,53 @@ flowchart LR
     H[Monitor Phone]
 ```
 
-#### 7.2 OCC Remote Thermal State HMI 
+#### 7.2 OCC Remote Thermal State HMI
 
-For the OCC remote Thermal State Visualization HMI, as its geo-location is far away from the power plant/station in the grid, it will use 5G network to connect to all the 3 IoT gateway to fetch the data. 
+While Local HMIs provide operational visibility within a specific facility, power grid operators also require a centralized platform capable of monitoring the thermal condition of geographically distributed assets.
 
- For the data visulization.
+To support this requirement, the cyber twin includes a Power Grid Operation Control Center (OCC) Remote Thermal State HMI. Unlike the Local HMIs, the OCC HMI communicates with all three IoT Gateways through the simulated 5G communication network, allowing operators to view thermal information from multiple power grid locations through a single interface. 
 
+The integrated user interface is shown below : 
 
+![](6_Thermal_State_Monitor_Desgin_Img/s_11.png)
 
+The temperature value of each monitored component is displayed adjacent to the corresponding electrical asset within the power grid topology.
 
+#### 7.3 Abnormal Condition Detection and Alarm Management
 
+The thermal monitoring system continuously evaluates incoming temperature measurements against predefined operational thresholds. Each monitored asset is assigned multiple temperature ranges corresponding to different operating conditions.Typical alarm scenarios include:
 
+- Transformer overheating
+- Cable overload conditions
+- Connector hot spots
+- BESS thermal management failures
+- Fire risk conditions
+
+**Normal Operating State** : When the measured temperature remains within the expected operating range, the component is displayed using a **Yellow** status indicator.
+
+```
+Yellow = Normal Operating Condition
+```
+
+**Warning State** : When the temperature approaches the upper operational limit, the component is displayed using an **Orange** status indicator.
+
+```
+Orange = Attention Required
+```
+
+**Alarm State** : When the temperature exceeds the predefined safety threshold, the component enters the alarm state. The affected component is displayed using:
+
+- A **Red status indicator**
+- **A Blinking alarm icon**
+- A corresponding alarm message in the monitoring interface
+
+```
+Red + Blinking Alarm = Critical Overtemperature Condition
+```
 
 
 
 ------
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
