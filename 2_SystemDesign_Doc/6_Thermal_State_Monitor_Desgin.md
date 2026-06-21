@@ -2,6 +2,8 @@
 
 **Project Design Purpose** : This article introduces the design and implementation of a simulated Industrial Internet of Things (IIoT)-based thermal state monitoring system developed as part of the [OT Power Grid Cyber Twin](https://www.linkedin.com/pulse/power-grid-ot-simulation-system-yuancheng-liu-dpplc). The project is aim to recreate the core operational concepts of a wireless temperature monitoring solution, including Wi-Fi-IoT temperature sensors, a 5G IoT gateway, and two monitoring and control Human-Machine Interface (HMI)s.
 
+![](6_Thermal_State_Monitor_Desgin_Img/s_02.png)
+
 The idea of building the system is inspired by the functionality of the [Schneider Electric ZBRTT1 2.4KHz Wireless Temperature IoT Sensor](https://www.se.com/sg/en/product/ZBRTT1/wireless-transmitter-harmony-xb5r-transmitter-components-for-wireless-temperature-sensors-green-2400mhz/) solution and demonstrates how thermal condition monitoring can support power grid operations, equipment health assessment, abnormal condition detection, and fire risk alarm generation in modern electrical infrastructure. The project is organized into five major functional components:
 
 - Real-Time Power Grid Thermal State Generation and Simulation Module.
@@ -73,11 +75,11 @@ To implement the Thermal State Monitoring System (TSMS) in the power grid cyber 
 
 #### 2.1 System Components and Function
 
-The project is organized into five major functional components:
+The project is organized into five major functional components :
 
 **Real-Time Power Grid Thermal State Simulation**
 
-- Generates simulated temperature data for critical power grid assets, including transformers, high-voltage switchgear, power transmission cables, electrical connectors, and Battery Energy Storage System (BESS) components. These thermal profiles represent the physical processes within the power grid cyber twin and serve as the primary data source for the monitoring system.
+- Generates simulated temperature data for critical power grid assets, including the transformers, high-voltage switchgear, power transmission cables, electrical connectors, and Battery Energy Storage System (BESS) components. These thermal profiles represent the physical processes within the power grid cyber twin and serve as the primary data source for the monitoring system.
 
 **Wi-Fi IoT Temperature Sensor Simulator**
 
@@ -93,7 +95,7 @@ The project is organized into five major functional components:
 
 **Data Visualization and Abnormal Condition Detection**
 
-- Simulates both local and centralized thermal monitoring HMIs for real-time data visualization, trend analysis, alarm management, and abnormal condition detection. The system can identify temperature anomalies, overheating events, and potential fire hazards based on predefined operational thresholds.
+- Simulates both local and centralized thermal monitoring HMIs for the real-time data visualization, trend analysis, alarm management, and abnormal condition detection. The system can identify temperature anomalies, overheating events, and potential fire hazards based on predefined operational thresholds.
 
 
 
@@ -107,7 +109,7 @@ Total of 17 simulated thermal sensors are distributed across different power gri
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_05.png)
 
-Each simulated sensor generates temperature readings every second. The generated value is calculated using a baseline temperature combined with a small random fluctuation to emulate the gradual thermal variations typically observed in real-world electrical equipment.
+Each simulated sensor generates temperature readings every second. The generated value is calculated using a baseline temperature (from current real time whether info) combined with a small random fluctuation to emulate the gradual thermal variations typically observed in real-world electrical equipment.
 
 #### 3.1 Simulated Thermal Data Generation
 
@@ -123,9 +125,7 @@ Component Temperature = Ambient Temperature + Random Value (0°C ~ 1°C)
 
 **3.1.2 Components Operational State**
 
-When the component is energized and carrying electrical load, the generated temperature is influenced by its operating condition. As the load increases, additional heat is produced due to electrical losses, resulting in higher measured temperatures.
-
-The examples include:
+When the component is energized and carrying electrical load, the generated temperature is influenced by its operating condition. As the load increases, additional heat is produced due to electrical losses, resulting in higher measured temperatures. Some example scenario implemented in the simulation progress :
 
 - Higher transmission cable current resulting in increased cable temperature.
 - Increased transformer loading causing higher winding and enclosure temperatures.
@@ -138,11 +138,11 @@ The simulator uses realistic operational temperature ranges derived from commonl
 
 **3.2.1 Transformer Operational Temp Range**
 
-| Ambient Temperature              | Internal Winding Temperature | Max "Hot Spot" Temp |
-| -------------------------------- | ---------------------------- | ------------------- |
-| Current Temp to +40°C (Avg 30°C) | 55°C to 65°C above ambient   | Max 105°C - 120°C   |
+| Ambient temperature range        | Internal winding temperature | Max "Hot Spot" temp range |
+| -------------------------------- | ---------------------------- | ------------------------- |
+| Current Temp to +40°C (Avg 30°C) | 55°C to 65°C above ambient   | Max 105°C - 120°C         |
 
-The transformer winding temperature is typically significantly higher than the surrounding ambient temperature due to internal copper and core losses. The hot-spot temperature is one of the most important indicators used to assess transformer health and insulation aging.
+**Remark** : The transformer winding temperature is typically significantly higher than the surrounding ambient temperature due to internal copper and core losses. 
 
 **3.2.2 Power Transmission Cable Temp Range**
 
@@ -150,15 +150,15 @@ The transformer winding temperature is typically significantly higher than the s
 | --------------------------------- | -------------------------- | -------------------------- |
 | 70°C to 90°C                      | 105°C–130°C                | 160°C to 250°C             |
 
-Cable temperatures increase as load current rises. Extended operation beyond the normal temperature range may accelerate insulation degradation and reduce cable service life.
+**Remark** : Cable temperatures increase as load current rises. Extended operation beyond the normal temperature range may accelerate insulation degradation and reduce cable service life.
 
 **3.2.3 Battery Energy Storage System (BESS) Temp Range** 
 
-| Optimal Operational Range | Extreme Weather Range | Over heat range |
-| ------------------------- | --------------------- | --------------- |
-| 15°C to 35°C (avg 25 °C)  | 35°C to 50/55°C       | Above 60 °C     |
+| Optimal operational Rrange | Extreme weather range | Over heat range |
+| -------------------------- | --------------------- | --------------- |
+| 15°C to 35°C (avg 25 °C)   | 35°C to 50/55°C       | Above 60 °C     |
 
-Battery temperature is a critical safety parameter. Excessive temperatures can reduce battery performance, shorten service life, and potentially increase the risk of thermal runaway events.
+**Remark** : Battery temperature is a critical safety parameter. Excessive temperatures can reduce battery performance, shorten service life, and potentially increase the risk of thermal runaway events.
 
 #### 3.3 Data Interaction and Connection
 
@@ -189,15 +189,15 @@ The workflow of the ZBRTT1 Thermal IoT Simulator is shown below :
 The simulator consists of four major functional modules:
 
 - UDP Client Module : Real time thermal state data fetching. 
-- Data Encryption Module : IoT Data Protection. 
+- Data Encryption Module : IoT Data transmission protection. 
 - MQTT Data Structure Module : Data processing and timestamp combination. 
-- MQTT Client Module : Data publish to upper layer OT device. 
+- MQTT Client Module : Data publish to upper layer OT devices. 
 
 #### 4.2 Data Exchange Interfaces
 
-Each IoT simulator is deployed as an independent virtual machine (VM) within the Physical World Subnet with 2 network interface linked both the green team network and blue team network. Each IoT simulator maintains two logical communication interfaces that connect the Physical World Simulator and the IoT communication infrastructure.
+Each IoT simulator is deployed as an independent virtual machine (VM) within the Physical World Subnet with 2 network interface linked both the green team network and blue team network. Each IoT simulator maintains two logical communication interfaces that connect both the Physical World Simulator and the IoT communication infrastructure.
 
-- **Physical World Data Interface** : The first interface connects the IoT simulator to the Physical World Simulator through the Green Team network. The simulator receives real-time thermal state data from the corresponding power grid asset using the User Datagram Protocol (UDP).
+- **Physical World Data Interface** : The first interface connects the IoT simulator to the Physical World Simulator through the Green Team network. The simulator receives real-time thermal state data from the corresponding power grid asset using the UDP.
 - **Wireless IoT Communication Interface** : The second interface consists of an MQTT Client connected to the simulated 2.4 GHz Wi-Fi network. This interface is responsible for publishing thermal sensor data to the IoT Gateway Simulator.
 
 #### 4.3 Thermal Data Processing Workflow
@@ -217,26 +217,26 @@ When a new temperature value is received from the Physical World Simulator, the 
 
 To simulate the communication architecture of a modern power grid thermal monitoring system, the 17 ZBRTT1 Thermal IoT Simulators are divided into multiple deployment groups representing sensors installed across different substations, transformer stations, and power distribution facilities. Each group of IoT sensors communicates with a designated 5G IoT Gateway Simulator.
 
-The System workflow diagram is shown below: 
+The system workflow diagram is shown below: 
 
 ![](6_Thermal_State_Monitor_Desgin_Img/s_08.png)
 
 #### 5.1 Gateway Deployment Architecture
 
-Each 5G IoT Gateway Simulator is deployed as an independent virtual machine within the cyber range environment. The gateway contains two network interfaces to simulate its role as a bridge between field devices and higher-level monitoring systems.
+Each 5G IoT Gateway Simulator is deployed as an independent virtual machine within the cyber range environment lvl1 OT network. The gateway contains two network interfaces to simulate its role as a bridge between field devices and higher-level monitoring systems.
 
-**5.1.1 Level 2 OT Network Interface (2.4 GHz Wi-Fi)**
+**5.1.1 Level 1 OT Network Interface (2.4 GHz Wi-Fi)**
 
-The first network interface is connected to the simulated **Level 2 OT Blue Team Network**, representing a local 2.4 GHz Wi-Fi network used by the thermal IoT sensors. The interface will be responsible for:
+The first network interface is connected to the simulated Level 1 OT Blue Team Network, representing a local 2.4 GHz Wi-Fi network used by the thermal IoT sensors. The interface will be responsible for:
 
 - Receiving MQTT publications from multiple ZBRTT1 Thermal IoT Simulators.
 - Providing MQTT subscription services to local monitoring HMIs.
 
-**5.1.2 Level 3 OT Network Interface (5G Network)**
+**5.1.2 Level 2 OT Network Interface (5G Network)**
 
-The second network interface is connected to the simulated **Level 3 OT Blue Team Network**, representing a private industrial 5G communication network. This interface allows:
+The second network interface is connected to the simulated Level 2 OT Blue Team Network, representing a private industrial 5G communication network. This interface allows:
 
-- Remote monitoring systems to subscribe to thermal monitoring data.
+- Remote monitoring systems to subscribe to the encrypted thermal data.
 - Data transmission between substations and the Power Grid Control Center.
 
 #### 5.2 MQTT Communication Services
@@ -274,7 +274,7 @@ When a thermal IoT sensor publishes a new encrypted temperature measurement, the
 
 - **Step 1 – Receive MQTT Message** : The MQTT Broker receives the encrypted payload published by a thermal IoT sensor.
 - **Step 2 – Decrypt Sensor Data** : The gateway identifies the originating sensor and retrieves the corresponding AES encryption key and initialization vector from the IoT Security Database. The received payload is then decrypted to recover the original temperature measurement.
-- **Step 3 – Aggregate Sensor Measurements **: The gateway continuously maintains the latest thermal reading from every connected sensor. After processing incoming updates, the gateway combines the most recent measurements into a consolidated data structure. Example: 
+- **Step 3 – Aggregate Sensor Measurements **: The gateway continuously maintains the latest thermal reading from every connected sensor. After processing incoming updates, the gateway combines the most recent measurements into a consolidated data structure as shown in the below example: 
 
 ```python
 {
@@ -300,16 +300,14 @@ The simulated thermal monitoring system relies on Industrial Internet of Things 
 
 he thermal monitoring system uses the **Message Queuing Telemetry Transport (MQTT)** protocol as the primary communication mechanism between the thermal IoT sensors, IoT gateways, and monitoring HMIs.
 
-For detailed information regarding the MQTT communication framework, protocol implementation, and data exchange mechanisms used in this project, please refer to the MQTT Communication Module documentation:
+For detailed information regarding the MQTT communication framework, protocol implementation, and data exchange mechanisms used in this project, please refer to the documentation of Python Virtual RTU/IIoT Simulator – IEC 20922 MQTT Protocol Communication Module : https://www.linkedin.com/pulse/python-virtual-rtuiiot-simulator-iec-20922-mqtt-protocol-liu-gbqnc
 
-Python Virtual RTU/IIoT Simulator – IEC 20922 MQTT Protocol Communication Module : https://www.linkedin.com/pulse/python-virtual-rtuiiot-simulator-iec-20922-mqtt-protocol-liu-gbqnc
-
-#### 6.2 Data Exchange Security
+#### 6.2 Two Layers Data Exchange Security
 
 To simulate the security architecture commonly deployed in industrial IoT environments, the system implements two layers of communication protection:
 
-- **Transport-Level Security** : At the MQTT communication layer, the system supports ****Secure Sockets Layer (SSL) and Transport Layer Security (TLS) technologies to establish encrypted communication channels between MQTT clients and MQTT brokers.
-- **Application-Level Data Encryption** : In addition to SSL/TLS transport security, the thermal monitoring system applies AES-128 encryption directly to the sensor payload before transmission
+- **Transport-Level Security** : At the MQTT communication layer, the system supports the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) to establish encrypted communication channels between MQTT clients and MQTT brokers.
+- **Application-Level Data Encryption** : In addition to SSL/TLS transport security, the thermal monitoring system applies AES-128 encryption directly to the sensor payload before transmission.
 
 After decrypting and aggregating the thermal measurements from multiple sensors, the IoT Gateway performs a second encryption operation before making the data available to monitoring clients.
 
@@ -337,7 +335,7 @@ All the data remains protected throughout its entire lifecycle, from generation 
 
 ### 7. Data Visualization and Abnormal Condition Detection
 
-The final layer of the simulated thermal monitoring system is responsible for visualizing thermal data collected from field devices and detecting abnormal operating conditions. To support both local operations and centralized grid management, the cyber twin deploys two types of Human-Machine Interfaces (HMIs) : Local Thermal State Monitoring HMIs and a Remote OCC Thermal State Monitoring HMI.
+The final layer of the simulated thermal monitoring system is responsible for visualizing thermal data collected from field devices and detecting abnormal operating conditions. To support both local operations and centralized grid management, the cyber twin deploys two types of Human-Machine Interfaces (HMIs) : `Local Thermal State Monitoring HMI`s and a `Remote OCC Thermal State Monitoring HMI`.
 
 The communication architecture between the monitoring systems and IoT gateways is shown below: 
 
@@ -430,7 +428,7 @@ The temperature value of each monitored component is displayed adjacent to the c
 
 #### 7.3 Abnormal Condition Detection and Alarm Management
 
-The thermal monitoring system continuously evaluates incoming temperature measurements against predefined operational thresholds. Each monitored asset is assigned multiple temperature ranges corresponding to different operating conditions.Typical alarm scenarios include:
+The thermal monitoring system continuously evaluates incoming temperature measurements against predefined operational thresholds. Each monitored asset is assigned multiple temperature ranges corresponding to different operating conditions. Typical alarm scenarios include:
 
 - Transformer overheating
 - Cable overload conditions
@@ -438,13 +436,13 @@ The thermal monitoring system continuously evaluates incoming temperature measur
 - BESS thermal management failures
 - Fire risk conditions
 
-**Normal Operating State** : When the measured temperature remains within the expected operating range, the component is displayed using a **Yellow** status indicator.
+**Normal Operating State** : When the measured temperature remains within the expected operating range, the component is displayed using a Yellow status indicator.
 
 ```
 Yellow = Normal Operating Condition
 ```
 
-**Warning State** : When the temperature approaches the upper operational limit, the component is displayed using an **Orange** status indicator.
+**Warning State** : When the temperature approaches the upper operational limit, the component is displayed using an Orange status indicator.
 
 ```
 Orange = Attention Required
@@ -452,8 +450,8 @@ Orange = Attention Required
 
 **Alarm State** : When the temperature exceeds the predefined safety threshold, the component enters the alarm state. The affected component is displayed using:
 
-- A **Red status indicator**
-- **A Blinking alarm icon**
+- A Red status indicator
+- A Blinking alarm icon
 - A corresponding alarm message in the monitoring interface
 
 ```
@@ -464,9 +462,22 @@ Red + Blinking Alarm = Critical Overtemperature Condition
 
 ------
 
+### 8. Conclusion and Reference
 
+![](6_Thermal_State_Monitor_Desgin_Img/s_01.png)
 
-https://youtu.be/LKCDbCJlYPo?si=8S81zykMe3NsBzSZ
+#### 8.2 Conclusion
 
-https://www.se.com/au/en/download/document/GDE58746/
+This article has presented the design and implementation of a simulated Wi-Fi and 5G IIoT-based Thermal State Monitoring System (TSMS) within an OT Power Grid Cyber Twin environment. Inspired by the operational principles of commercial wireless temperature monitoring solutions such as the Schneider Electric ZBRTT1 sensor, the project successfully distills the core concepts of industrial thermal monitoring—from field sensing and wireless transmission to centralized visualization and alarm management—into a functional digital construct suitable for cybersecurity training, research, and educational purposes.
+
+The system integrates five major functional components: a real-time thermal state generation module that produces realistic temperature profiles for transformers, transmission cables, connectors, and BESS components; 17 simulated Wi‑Fi IoT temperature sensors that periodically measure and encrypt equipment temperatures; three 5G IoT gateways that aggregate sensor data and provide both local historian storage and gateway-level encryption; an MQTT-based communication framework with two-layer AES-128 encryption and SSL/TLS transport security; and both local and remote monitoring HMIs that deliver real-time visualization, trend analysis, and abnormal condition detection with clear warning and alarm indicators.
+
+By simulating the complete data flow—from physical-world thermal generation through encrypted sensor transmission, gateway aggregation, and secure remote visualization—the cyber twin provides a realistic yet simplified representation of modern power grid thermal monitoring infrastructure. The modular architecture and configurable threshold-based alarm system enable trainees and researchers to explore operational workflows, practice incident response procedures, and study the cybersecurity implications of IIoT deployments in critical infrastructure environments. Importantly, as noted at the outset, this simulation intentionally distills rather than replicates the full complexity of real-world power grid monitoring systems, focusing instead on capturing the essential operational and security patterns that are most relevant for cyber exercise and educational scenarios. Future extensions could incorporate additional sensor types, more sophisticated anomaly detection algorithms, and integration with broader grid management systems to further enhance the fidelity and educational value of the cyber twin environment.
+
+#### 8.1 Reference Link
+
+- https://github.com/LiuYuancheng/Power_Grid_Simulation_System_Document
+- https://youtu.be/LKCDbCJlYPo?si=8S81zykMe3NsBzSZ
+- https://www.se.com/au/en/download/document/GDE58746/
+
 
